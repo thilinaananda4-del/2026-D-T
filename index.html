@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#000000">
+
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23c8820a'/%3E%3Ccircle cx='32' cy='32' r='8' fill='%23ffd700' stroke='%23fff' stroke-width='1.5'/%3E%3Ccircle cx='32' cy='32' r='26' fill='none' stroke='%23ffd700' stroke-width='2'/%3E%3Cg stroke='%23ffd700' stroke-width='2'%3E%3Cline x1='32' y1='6' x2='32' y2='24'/%3E%3Cline x1='32' y1='40' x2='32' y2='58'/%3E%3Cline x1='6' y1='32' x2='24' y2='32'/%3E%3Cline x1='40' y1='32' x2='58' y2='32'/%3E%3Cline x1='13' y1='13' x2='25' y2='25'/%3E%3Cline x1='39' y1='39' x2='51' y2='51'/%3E%3Cline x1='51' y1='13' x2='39' y2='25'/%3E%3Cline x1='25' y1='39' x2='13' y2='51'/%3E%3C/g%3E%3C/svg%3E">
+
+  <title>ඩිජිටල් වෙසක් කලාපය - Home</title>
+  
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    html,body{height:100%;overflow-x:hidden}
+    
+    :root {
+      --vh: 1vh;
+    }
+    
+    body{
+      min-height:100vh;
+      min-height: calc(var(--vh, 1vh) * 100);
+      background:#000;
+      font-family: Arial, Helvetica, sans-serif;
+      color:#fff;
+      overscroll-behavior: none;
+      background: 
+        linear-gradient(rgba(0,0,0,0.55), rgba(0,0,0,0.55)),
+        url('bg.jpg') center center no-repeat,
+        #000;
+      background-size: cover;
+      background-attachment: fixed;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .bg-overlay {
+      position: fixed;
+      inset: 0;
+      background: radial-gradient(ellipse at center, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.75) 100%);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* Main Container */
+    .container {
+      position: relative;
+      z-index: 20;
+      width: 100%;
+      max-width: 1200px;
+      padding: 40px 20px 20px; /* පල්ලෙහායින් හිස් ඉඩක් තැබීමට */
+      text-align: center;
+    }
+
+    /* Header Styling */
+    header {
+      margin-bottom: 45px;
+      animation: fadeInDown 1s ease;
+    }
+
+    header h1 {
+      font-size: 2.6rem;
+      font-weight: 700;
+      color: #ffd700;
+      text-shadow: 0 0 20px rgba(254, 215, 0, 0.6), 0 2px 4px rgba(0,0,0,0.8);
+      margin-bottom: 12px;
+      letter-spacing: 1px;
+    }
+
+    /* Pahala visthara (Description text) */
+    .header-desc {
+      font-size: 1.1rem;
+      color: #e0e0e0;
+      max-width: 600px;
+      margin: 0 auto;
+      line-height: 1.6;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.9);
+    }
+
+    /* Buddha Image Container */
+    .buddha-image-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .buddha-main-img {
+      width: 140px;
+      height: auto;
+      object-fit: contain;
+      filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.8));
+      -webkit-user-drag: none;
+      user-select: none;
+      pointer-events: none;
+    }
+
+    /* Music Floating Control Button */
+    .music-control {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 100;
+      background: rgba(200, 130, 10, 0.3);
+      border: 1px solid rgba(255, 215, 0, 0.4);
+      backdrop-filter: blur(10px);
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+      transition: all 0.3s ease;
+    }
+    
+    .music-control:hover {
+      background: rgba(255, 215, 0, 0.5);
+      transform: scale(1.1);
+    }
+
+    .music-icon {
+      fill: #ffd700;
+      width: 20px;
+      height: 20px;
+    }
+
+    /* Thorana Grid Layout */
+    .thorana-grid {
+      display: flex;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+      width: 100%;
+      margin-bottom: 40px; /* Footer එක සහ Card අතර පරතරය */
+    }
+
+    /* Card Styling */
+    .thorana-card {
+      background: rgba(15, 15, 15, 0.75);
+      border: 1px solid rgba(255, 215, 0, 0.2);
+      border-radius: 20px;
+      width: 340px;
+      overflow: hidden;
+      backdrop-filter: blur(15px);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+      animation: fadeInUp 1s ease;
+    }
+
+    .thorana-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      border-radius: 20px;
+      padding: 2px;
+      background: linear-gradient(135deg, #ffd700, transparent, #c8820a);
+      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      -webkit-mask-composite: xor;
+      mask-composite: exclude;
+      opacity: 0.4;
+      transition: opacity 0.3s;
+    }
+
+    .thorana-card:hover {
+      transform: translateY(-10px);
+      border-color: rgba(255, 215, 0, 0.6);
+      box-shadow: 0 15px 40px rgba(255, 215, 0, 0.2);
+    }
+
+    .thorana-card:hover::before {
+      opacity: 1;
+    }
+
+    /* Preview Box with GIF */
+    .preview-box {
+      width: 100%;
+      height: 380px;
+      background: #050505;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .preview-box img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      transition: transform 0.5s ease;
+    }
+
+    .thorana-card:hover .preview-box img {
+      transform: scale(1.05);
+    }
+
+    /* Details inside Card */
+    .thorana-details {
+      padding: 25px 20px;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      flex-grow: 1;
+    }
+
+    .thorana-details h2 {
+      font-size: 1.4rem;
+      color: #fff;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+    }
+
+    /* View Button */
+    .view-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 24px;
+      border-radius: 12px;
+      background: linear-gradient(45deg, #c8820a, #ffd700);
+      color: #000;
+      text-decoration: none;
+      font-weight: 700;
+      font-size: 15px;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(200, 130, 10, 0.3);
+      border: none;
+      cursor: pointer;
+      position: relative;
+      z-index: 30;
+    }
+
+    .view-btn:hover {
+      background: linear-gradient(45deg, #ffd700, #c8820a);
+      box-shadow: 0 8px 25px rgba(255, 215, 0, 0.5);
+      transform: scale(1.02);
+    }
+
+    /* Footer Styling */
+    footer {
+      width: 100%;
+      text-align: center;
+      color: #888888;
+      font-size: 0.9rem;
+      padding: 20px 0;
+      margin-top: auto; /* අනිවාර්යයෙන්ම පිටුවේ පහළින්ම රඳවා ගැනීමට */
+      z-index: 20;
+      font-family: Arial, sans-serif;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none; /* අකුරු select වීම වැළැක්වීම */
+    }
+
+    /* Effects Styles */
+    #snow {
+      pointer-events: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100vh;
+      z-index: 5;
+    }
+    
+    .snowflake {
+      position: absolute;
+      top: -10px;
+      border-radius: 50%;
+      animation-name: fall;
+      animation-timing-function: ease-in-out;
+      animation-iteration-count: infinite;
+      will-change: transform;
+    }
+
+    .snow-white {
+      background: radial-gradient(circle, #fff 0%, #f0f8ff 100%);
+      opacity: 0.7;
+      filter: drop-shadow(0 0 4px rgba(255,255,255,0.9));
+    }
+
+    .snow-yellow {
+      background: radial-gradient(circle, #ffd700 0%, #ffaa00 100%);
+      opacity: 0.8;
+      filter: drop-shadow(0 0 6px rgba(255, 215, 0, 0.9));
+    }
+    
+    @keyframes fall {
+      0% { transform: translateY(-20px) translateX(0) rotate(0deg); opacity: 0.8; }
+      50% { opacity: 0.5; }
+      100% { transform: translateY(calc(100vh + 20px)) translateX(30px) rotate(360deg); opacity: 0.1; }
+    }
+
+    #fog1, #fog2 {
+      position: fixed;
+      top: -20%; left: -20%;
+      width: 140%; height: 140%;
+      pointer-events: none;
+      z-index: 2;
+      will-change: transform;
+      animation-timing-function: ease-in-out;
+      animation-iteration-count: infinite;
+      animation-direction: alternate;
+    }
+    
+    #fog1 {
+      background: radial-gradient(ellipse at center, rgba(255,255,255,0.04) 0%, transparent 70%);
+      animation: fogMove1 50s infinite alternate;
+    }
+    #fog2 {
+      background: radial-gradient(ellipse at center, rgba(200,230,255,0.03) 0%, transparent 75%);
+      animation: fogMove2 70s infinite alternate;
+    }
+
+    @keyframes fogMove1 { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(40px, 20px) scale(1.1); } }
+    @keyframes fogMove2 { 0% { transform: translate(0, 0) scale(1); } 100% { transform: translate(-40px, 30px) scale(1.15); } }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Mobile Responsive Setup */
+    @media (max-width: 768px) {
+      header h1 { font-size: 2rem; }
+      .header-desc { font-size: 0.95rem; padding: 0 10px; }
+      .thorana-grid { gap: 25px; margin-bottom: 30px; }
+      .thorana-card { width: 290px; }
+      .preview-box { height: 320px; }
+      .view-btn { padding: 12px 20px; font-size: 14px; }
+      .buddha-image-container { margin-bottom: 15px; }
+      .buddha-main-img { width: 105px; }
+      footer { font-size: 0.8rem; padding: 15px 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-overlay"></div>
+
+  <audio id="bgMusic" src="myc.mp3" loop></audio>
+
+  <div class="music-control" id="musicBtn" title="Play/Pause Music">
+    <svg class="music-icon" id="musicIcon" viewBox="0 0 24 24">
+      <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77zM4.19 4.47L3.13 5.53 7.6 10H4v4h3l5 5v-6.93l4.56 4.56c-.44.34-.92.63-1.44.83v2.06c1.07-.24 2.06-.74 2.91-1.44l2.44 2.44 1.06-1.06L4.19 4.47zM12 4L9.91 6.09 12 8.18V4z"/>
+    </svg>
+  </div>
+
+  <div class="container">
+    <header>
+      <div class="buddha-image-container">
+        <img src="buddha.png" alt="Budhu Pihitai" class="buddha-main-img">
+      </div>
+      
+      <h1>ඩිජිටල් වෙසක් කලාපය</h1>
+      
+      <p class="header-desc">
+        පින්බර වෙසක් මංගල්‍යයක් වේවා! උතුම් බුදු ගුණ මහිමයෙන් ලොවම ඒකාලෝක කරන මේ පුණ්‍ය මහෝත්සවයේදී, ඩිජිටල් තාක්ෂණයෙන් හැඩවුණු අලංකාර තොරණ් ප්‍රතිනිර්මාණයන් නරඹා සිත් සතන් පහදවා ගන්න.
+      </p>
+    </header>
+
+    <div class="thorana-grid">
+      <div class="thorana-card">
+        <div class="preview-box">
+          <img src="456.gif" alt="Thorana 1 Preview" loading="lazy">
+        </div>
+        <div class="thorana-details">
+          <h2>01. අංගුලිමාල කථා වස්තුව</h2>
+          <a href="thorana1.html" class="view-btn">තොරණ නරඹන්න (View)</a>
+        </div>
+      </div>
+
+      <div class="thorana-card">
+        <div class="preview-box">
+          <img src="123.gif" alt="Thorana 2 Preview" loading="lazy">
+        </div>
+        <div class="thorana-details">
+          <h2>02. |වෙස්සන්තර කථා වස්තුව</h2>
+          <a href="thorana2.html" class="view-btn">තොරණ නරඹන්න (View)</a>
+        </div>
+      </div>
+    </div>
+
+    <footer>
+      © 2026 Thilina Ananda. All rights reserved.
+    </footer>
+  </div>
+
+  <div id="snow" aria-hidden="true"></div>
+  <div id="fog1" aria-hidden="true"></div>
+  <div id="fog2" aria-hidden="true"></div>
+
+  <script>
+    function setVH() {
+      let vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    }
+    window.addEventListener('resize', setVH);
+    setVH();
+
+    document.addEventListener('contextmenu', e => {
+      if (!e.target.closest('.view-btn') && !e.target.closest('.music-control')) e.preventDefault();
+    });
+    document.addEventListener('dragstart', e => e.preventDefault());
+    document.addEventListener('selectstart', e => {
+      if (!e.target.closest('.view-btn') && !e.target.closest('.music-control')) e.preventDefault();
+    });
+
+    // --- Background Music System ---
+    const audio = document.getElementById('bgMusic');
+    const musicBtn = document.getElementById('musicBtn');
+    const musicIcon = document.getElementById('musicIcon');
+
+    const iconPlay = `<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>`;
+    const iconMute = `<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77zM4.19 4.47L3.13 5.53 7.6 10H4v4h3l5 5v-6.93l4.56 4.56c-.44.34-.92.63-1.44.83v2.06c1.07-.24 2.06-.74 2.91-1.44l2.44 2.44 1.06-1.06L4.19 4.47zM12 4L9.91 6.09 12 8.18V4z"/>`;
+
+    function toggleMusic() {
+      if (audio.paused) {
+        audio.play().then(() => {
+          musicIcon.innerHTML = iconPlay;
+        }).catch(err => console.log("Audio block active:", err));
+      } else {
+        audio.pause();
+        musicIcon.innerHTML = iconMute;
+      }
+    }
+
+    musicBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      toggleMusic();
+    });
+
+    document.body.addEventListener('click', () => {
+      if (audio.paused) {
+        audio.play().then(() => {
+          musicIcon.innerHTML = iconPlay;
+        }).catch(() => {});
+      }
+    }, { once: true });
+
+
+    // --- Color Mixing Snowfall Engine ---
+    const snowContainer = document.getElementById('snow');
+    function createSnowflake() {
+      const snowflake = document.createElement('div');
+      snowflake.classList.add('snowflake');
+      
+      if (Math.random() > 0.5) {
+        snowflake.classList.add('snow-white');
+      } else {
+        snowflake.classList.add('snow-yellow');
+      }
+      
+      const isMobile = window.innerWidth <= 768;
+      const baseSize = isMobile ? 2 : 4;
+      const size = Math.random() * 3 + baseSize;
+      
+      snowflake.style.width = size + 'px';
+      snowflake.style.height = size + 'px';
+      snowflake.style.left = Math.random() * 100 + 'vw';
+      
+      const duration = Math.random() * 8 + 7;
+      snowflake.style.animationDuration = duration + 's';
+      snowflake.style.animationDelay = '-' + Math.random() * duration + 's';
+
+      snowContainer.appendChild(snowflake);
+      setTimeout(() => { snowflake.remove(); }, duration * 1000);
+    }
+
+    function snowFall() {
+      createSnowflake();
+      setTimeout(snowFall, window.innerWidth <= 768 ? 300 : 150);
+    }
+    
+    window.addEventListener('load', () => {
+      setTimeout(snowFall, 500);
+    });
+  </script>
+
+</body>
+</html>

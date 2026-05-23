@@ -1,0 +1,980 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no" />
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#000000">
+
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23c8820a'/%3E%3Ccircle cx='32' cy='32' r='8' fill='%23ffd700' stroke='%23fff' stroke-width='1.5'/%3E%3Ccircle cx='32' cy='32' r='26' fill='none' stroke='%23ffd700' stroke-width='2'/%3E%3Cg stroke='%23ffd700' stroke-width='2'%3E%3Cline x1='32' y1='6' x2='32' y2='24'/%3E%3Cline x1='32' y1='40' x2='32' y2='58'/%3E%3Cline x1='6' y1='32' x2='24' y2='32'/%3E%3Cline x1='40' y1='32' x2='58' y2='32'/%3E%3Cline x1='13' y1='13' x2='25' y2='25'/%3E%3Cline x1='39' y1='39' x2='51' y2='51'/%3E%3Cline x1='51' y1='13' x2='39' y2='25'/%3E%3Cline x1='25' y1='39' x2='13' y2='51'/%3E%3C/g%3E%3C/svg%3E">
+  <link rel="shortcut icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23c8820a'/%3E%3Ccircle cx='32' cy='32' r='8' fill='%23ffd700' stroke='%23fff' stroke-width='1.5'/%3E%3Ccircle cx='32' cy='32' r='26' fill='none' stroke='%23ffd700' stroke-width='2'/%3E%3Cg stroke='%23ffd700' stroke-width='2'%3E%3Cline x1='32' y1='6' x2='32' y2='24'/%3E%3Cline x1='32' y1='40' x2='32' y2='58'/%3E%3Cline x1='6' y1='32' x2='24' y2='32'/%3E%3Cline x1='40' y1='32' x2='58' y2='32'/%3E%3Cline x1='13' y1='13' x2='25' y2='25'/%3E%3Cline x1='39' y1='39' x2='51' y2='51'/%3E%3Cline x1='51' y1='13' x2='39' y2='25'/%3E%3Cline x1='25' y1='39' x2='13' y2='51'/%3E%3C/g%3E%3C/svg%3E">
+  <link rel="apple-touch-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23c8820a'/%3E%3Ccircle cx='32' cy='32' r='8' fill='%23ffd700' stroke='%23fff' stroke-width='1.5'/%3E%3Ccircle cx='32' cy='32' r='26' fill='none' stroke='%23ffd700' stroke-width='2'/%3E%3Cg stroke='%23ffd700' stroke-width='2'%3E%3Cline x1='32' y1='6' x2='32' y2='24'/%3E%3Cline x1='32' y1='40' x2='32' y2='58'/%3E%3Cline x1='6' y1='32' x2='24' y2='32'/%3E%3Cline x1='40' y1='32' x2='58' y2='32'/%3E%3Cline x1='13' y1='13' x2='25' y2='25'/%3E%3Cline x1='39' y1='39' x2='51' y2='51'/%3E%3Cline x1='51' y1='13' x2='39' y2='25'/%3E%3Cline x1='25' y1='39' x2='13' y2='51'/%3E%3C/g%3E%3C/svg%3E">
+
+  <title>Digital thorana</title>
+  <style>
+    *{margin:0;padding:0;box-sizing:border-box}
+    html,body{height:100%;overflow:hidden}
+    
+    :root {
+      --vh: 1vh;
+    }
+    
+    body{
+      height:100vh;
+      height: calc(var(--vh, 1vh) * 100);
+      background:#000;
+      font-family: Arial, Helvetica, sans-serif;
+      color:#fff;
+      position: fixed;
+      width: 100%;
+      overscroll-behavior: none;
+      -webkit-overflow-scrolling: touch;
+      touch-action: none;
+      background: 
+        linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),
+        url('bg.jpg') center center no-repeat,
+        #000;
+      background-size: 80% auto;
+      background-attachment: fixed;
+    }
+    
+    .bg-overlay {
+      position: fixed;
+      inset: 0;
+      background: 
+        radial-gradient(circle at center, rgba(200,130,10,0.1) 0%, rgba(0,0,0,0.6) 100%);
+      z-index: 0;
+      pointer-events: none;
+    }
+    
+    .bg{
+      position:fixed;
+      inset:0;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      z-index:1;
+      width: 100vw;
+      height: 100vh;
+      height: calc(var(--vh, 1vh) * 100);
+    }
+    
+    .bg img{
+      width:100vw;
+      height:100vh;
+      height: calc(var(--vh, 1vh) * 100);
+      object-fit:contain;
+      object-position: center center;
+      -webkit-user-drag:none;
+      user-drag:none;
+      user-select:none;
+      pointer-events:none;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      max-width: 100vw;
+      max-height: 100vh;
+      /* Removed the drop-shadow yellow glow */
+    }
+    
+    .controls{
+      position:fixed;
+      top:max(12px, env(safe-area-inset-top, 12px));
+      right:max(12px, env(safe-area-inset-right, 12px));
+      z-index:10;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      background:rgba(20,15,5,0.85); /* Dark gold-tinted black */
+      padding:8px;
+      border-radius:12px;
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 215, 0, 0.3); /* Yellow border */
+      box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+      flex-wrap: wrap;
+    }
+    
+    .volume-control {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      background: rgba(255,255,255,0.08);
+      padding: 4px 8px;
+      border-radius: 8px;
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    
+    #volumeDisplay {
+      min-width: 35px;
+      text-align: center;
+      font-size: 11px;
+      font-weight: 600;
+      color: #ffd700; /* Yellow text */
+    }
+    
+    .controls button{
+      border:1px solid rgba(255, 215, 0, 0.3);
+      background:rgba(200, 130, 10, 0.2);
+      color:#ffd700; /* Yellow text */
+      padding:10px 14px;
+      border-radius:8px;
+      cursor:pointer;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      font-size: 13px;
+      font-weight: 600;
+      min-width: 50px;
+      min-height: 44px;
+      transition: all 0.2s ease;
+      backdrop-filter: blur(10px);
+    }
+    
+    .volume-control button {
+      padding: 6px 8px;
+      min-width: 32px;
+      min-height: 32px;
+      font-size: 12px;
+      border-radius: 6px;
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1);
+    }
+    
+    .controls button:hover{
+      background:rgba(255, 215, 0, 0.3);
+      color: #fff;
+      transform: scale(1.02);
+    }
+    
+    .controls button:active{
+      background:rgba(255, 215, 0, 0.4);
+      transform: scale(0.98);
+    }
+    
+    #tapOverlay{
+      position:fixed;
+      inset:0;
+      z-index:20;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      background:rgba(10,7,2,0.95); /* Dark yellowish-black mask */
+      text-align:center;
+      padding:30px;
+      gap:20px;
+      flex-direction:column;
+      font-size:18px;
+      backdrop-filter: blur(15px);
+      animation: fadeIn 0.3s ease;
+    }
+    
+    #tapOverlay.hidden{
+      display:none;
+      animation: fadeOut 0.3s ease;
+    }
+    
+    #tapOverlay button{
+      padding:16px 32px;
+      border-radius:16px;
+      /* ನಿල් පාට වෙනුවට කහ/රන්වන් gradient එකක් දමා ඇත */
+      background: linear-gradient(45deg, #c8820a, #ffd700);
+      color:#000; /* කළු පැහැති අකුරු පැහැදිලිව පෙනීමට */
+      border:2px solid rgba(255,255,255,0.4);
+      font-size:16px;
+      font-weight: 700;
+      cursor:pointer;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 25px rgba(255, 215, 0, 0.3);
+      min-width: 200px;
+      min-height: 56px;
+    }
+    
+    #tapOverlay button:hover{
+      background: linear-gradient(45deg, #ffd700, #c8820a);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 35px rgba(255, 215, 0, 0.5);
+    }
+    
+    #tapOverlay button:active{
+      transform: scale(0.96);
+      background: linear-gradient(45deg, #b07204, #e6c300);
+    }
+    
+    #tapOverlay .message {
+      font-size: 18px;
+      color: #ffd700; /* Yellow message text */
+      line-height: 1.6;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+      max-width: 400px;
+      margin: 0 auto;
+    }
+    
+    #tapOverlay small {
+      opacity: 0.8;
+      font-size: 14px;
+      color: #e0e0e0;
+    }
+
+    .hint {
+      display: none !important;
+    }
+
+    #snow {
+      pointer-events: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100vh;
+      height: calc(var(--vh, 1vh) * 100);
+      z-index: 15;
+      overflow: visible;
+    }
+    
+    .snowflake {
+      position: absolute;
+      top: -10px;
+      border-radius: 50%;
+      will-change: transform;
+    }
+
+    /* હિમકેટો માટે કહો વર્ણ પ્રભેદ બેક (Golden and Lemon Yellow Glow) */
+    .snow-gold {
+      background: radial-gradient(circle, #ffd700 0%, #ffaa00 100%);
+      opacity: 0.85;
+      filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.9));
+    }
+
+    .snow-lemon {
+      background: radial-gradient(circle, #fffacd 0%, #ffff00 100%);
+      opacity: 0.75;
+      filter: drop-shadow(0 0 4px rgba(255, 255, 0, 0.8));
+    }
+    
+    @keyframes fall {
+      0% {
+        transform: translateY(-20px) translateX(0) rotate(0deg);
+        opacity: 0.85;
+      }
+      50% {
+        opacity: 0.55;
+      }
+      100% {
+        transform: translateY(calc(100vh + 20px)) translateX(30px) rotate(360deg);
+        opacity: 0.1;
+      }
+    }
+
+    #fog1, #fog2, #fog3 {
+      position: fixed;
+      top: -20%; left: -20%;
+      width: 140%;
+      height: 140%;
+      pointer-events: none;
+      z-index: 12;
+      animation-timing-function: ease-in-out;
+      animation-iteration-count: infinite;
+      animation-direction: alternate;
+      will-change: transform;
+    }
+    
+    /* મૌગમ (Fog Effects) દ સહેલું રણવન પેહેકેડ હેડ હેડ હેડ હેડ હેડ હેડ હેડ હેડ હેડ */
+    #fog1 {
+      background: radial-gradient(ellipse at center, rgba(255,215,0,0.04) 0%, rgba(200,130,10,0.015) 40%, transparent 80%);
+      filter: blur(40px);
+      opacity: 0.4;
+      animation-name: fogMove1;
+      animation-duration: 45s;
+    }
+    
+    #fog2 {
+      background: radial-gradient(ellipse at center, rgba(255,230,150,0.03) 0%, rgba(200,150,50,0.01) 50%, transparent 85%);
+      filter: blur(60px);
+      opacity: 0.3;
+      animation-name: fogMove2;
+      animation-duration: 70s;
+      top: -30%; left: -30%;
+      width: 160%; height: 160%;
+    }
+    
+    #fog3 {
+      background: radial-gradient(ellipse at center, rgba(255,255,200,0.02) 0%, transparent 90%);
+      filter: blur(80px);
+      opacity: 0.2;
+      animation-name: fogMove3;
+      animation-duration: 90s;
+      top: -40%; left: -40%;
+      width: 180%; height: 180%;
+    }
+
+    @keyframes fogMove1 {
+      0% { transform: translateX(0) translateY(0) scale(1) rotate(0deg); }
+      100% { transform: translateX(40px) translateY(30px) scale(1.1) rotate(5deg); }
+    }
+    
+    @keyframes fogMove2 {
+      0% { transform: translateX(0) translateY(0) scale(1) rotate(0deg); }
+      100% { transform: translateX(-60px) translateY(40px) scale(1.15) rotate(-3deg); }
+    }
+    
+    @keyframes fogMove3 {
+      0% { transform: translateX(0) translateY(0) scale(1) rotate(0deg); }
+      100% { transform: translateX(30px) translateY(-50px) scale(1.2) rotate(2deg); }
+    }
+
+    #readme-link {
+      position: fixed;
+      bottom: max(16px, env(safe-area-inset-bottom, 16px));
+      right: max(16px, env(safe-area-inset-right, 16px));
+      z-index: 30;
+      background: rgba(20,15,5,0.85);
+      color: #ffd700; /* Yellow text */
+      padding: 12px 20px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 14px;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      -webkit-tap-highlight-color: transparent;
+      backdrop-filter: blur(15px);
+      border: 1px solid rgba(255, 215, 0, 0.3);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      min-height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 120px;
+    }
+    
+    #readme-link:hover, #readme-link:active {
+      background: linear-gradient(45deg, #c8820a, #ffd700);
+      color: #000;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(255, 215, 0, 0.4);
+    }
+
+    .bg-size-small { background-size: 60% auto !important; }
+    .bg-size-medium { background-size: 80% auto !important; }
+    .bg-size-large { background-size: 100% auto !important; }
+    .bg-size-cover { background-size: cover !important; }
+    .bg-size-contain { background-size: contain !important; }
+    
+    .bg-pos-top { background-position: center top !important; }
+    .bg-pos-bottom { background-position: center bottom !important; }
+    .bg-pos-left { background-position: left center !important; }
+    .bg-pos-right { background-position: right center !important; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: scale(0.9); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    
+    @keyframes fadeOut {
+      from { opacity: 1; transform: scale(1); }
+      to { opacity: 0; transform: scale(0.9); }
+    }
+
+    @media (max-width: 768px) {
+      body {
+        overflow: hidden;
+        position: fixed;
+        width: 100vw;
+        height: 100vh;
+        height: calc(var(--vh, 1vh) * 100);
+        -webkit-user-select: none;
+        user-select: none;
+        background-attachment: scroll;
+        background-size: 90% auto;
+      }
+      
+      .bg {
+        width: 100vw;
+        height: 100vh;
+        height: calc(var(--vh, 1vh) * 100);
+      }
+      
+      .bg img {
+        object-fit: contain;
+        width: 100vw;
+        height: 100vh;
+        height: calc(var(--vh, 1vh) * 100);
+        object-position: center center;
+        max-width: 100vw;
+        max-height: 100vh;
+        /* filter removed */
+      }
+      
+      .controls {
+        top: max(10px, env(safe-area-inset-top, 10px));
+        right: max(10px, env(safe-area-inset-right, 10px));
+        gap: 6px;
+        padding: 6px;
+        border-radius: 10px;
+        background: rgba(15,10,5,0.9);
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .volume-control {
+        gap: 3px;
+        padding: 3px 6px;
+      }
+      
+      #volumeDisplay {
+        min-width: 30px;
+        font-size: 10px;
+      }
+      
+      .volume-control button {
+        min-width: 28px;
+        min-height: 28px;
+        padding: 4px 6px;
+        font-size: 11px;
+      }
+      
+      .controls button {
+        padding: 8px 12px;
+        font-size: 12px;
+        border-radius: 6px;
+        min-width: 44px;
+        min-height: 44px;
+        font-weight: 600;
+      }
+      
+      #tapOverlay {
+        padding: 20px 16px;
+        gap: 24px;
+      }
+      
+      #tapOverlay .message {
+        font-size: 16px;
+        max-width: 320px;
+      }
+      
+      #tapOverlay button {
+        font-size: 16px;
+        padding: 16px 28px;
+        min-width: 220px;
+        min-height: 52px;
+        border-radius: 14px;
+      }
+      
+      #tapOverlay small {
+        font-size: 13px;
+      }
+      
+      #readme-link {
+        bottom: max(12px, env(safe-area-inset-bottom, 12px));
+        right: max(12px, env(safe-area-inset-right, 12px));
+        font-size: 12px;
+        padding: 10px 16px;
+        border-radius: 10px;
+        min-height: 40px;
+        min-width: 100px;
+        background: rgba(15,10,5,0.9);
+      }
+      
+      .snowflake {
+        width: 4px !important;
+        height: 4px !important;
+      }
+      
+      #fog1, #fog2, #fog3 {
+        opacity: 0.15;
+        filter: blur(20px);
+      }
+      
+      #fog2 {
+        opacity: 0.1;
+        filter: blur(30px);
+      }
+      
+      #fog3 {
+        opacity: 0.08;
+        filter: blur(40px);
+      }
+    }
+
+    @media (max-width: 480px) {
+      .controls {
+        top: max(8px, env(safe-area-inset-top, 8px));
+        right: max(8px, env(safe-area-inset-right, 8px));
+        padding: 4px;
+        gap: 4px;
+      }
+      
+      .controls button {
+        padding: 6px 10px;
+        font-size: 11px;
+        min-width: 40px;
+        min-height: 40px;
+      }
+      
+      #tapOverlay {
+        padding: 16px 12px;
+        gap: 20px;
+      }
+      
+      #tapOverlay .message {
+        font-size: 15px;
+        max-width: 280px;
+      }
+      
+      #tapOverlay button {
+        font-size: 15px;
+        padding: 14px 24px;
+        min-width: 200px;
+        min-height: 48px;
+      }
+      
+      #readme-link {
+        font-size: 11px;
+        padding: 8px 14px;
+        min-height: 36px;
+        min-width: 90px;
+      }
+      
+      .snowflake {
+        width: 3px !important;
+        height: 3px !important;
+      }
+    }
+
+    @media (max-width: 768px) and (orientation: landscape) {
+      .bg img {
+        object-fit: contain;
+        width: 100vw;
+        height: 100vh;
+        height: calc(var(--vh, 1vh) * 100);
+        max-width: 100vw;
+        max-height: 100vh;
+      }
+      
+      .controls {
+        top: max(8px, env(safe-area-inset-top, 8px));
+        right: max(8px, env(safe-area-inset-right, 8px));
+      }
+      
+      #readme-link {
+        bottom: max(8px, env(safe-area-inset-bottom, 8px));
+        right: max(8px, env(safe-area-inset-right, 8px));
+      }
+      
+      #tapOverlay {
+        padding: 16px;
+      }
+      
+      #tapOverlay .message {
+        font-size: 14px;
+      }
+    }
+
+    @media (min-width: 769px) and (max-width: 1024px) {
+      #tapOverlay .message {
+        font-size: 17px;
+      }
+      #readme-link {
+        font-size: 13px;
+      }
+    }
+
+    * {
+      touch-action: manipulation;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      -khtml-user-select: none;
+      -moz-user-select: none;
+      -ms-user-select: none;
+      user-select: none;
+    }
+
+    @supports (-webkit-touch-callout: none) {
+      body {
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior-y: none;
+        height: -webkit-fill-available;
+      }
+      
+      .bg {
+        height: -webkit-fill-available;
+      }
+      
+      .bg img {
+        height: -webkit-fill-available;
+        object-fit: contain;
+        max-width: 100vw;
+        max-height: 100vh;
+        -webkit-user-select: none;
+        -webkit-touch-callout: none;
+      }
+      
+      #snow {
+        height: -webkit-fill-available;
+      }
+    }
+
+    @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+      .snowflake {
+        filter: drop-shadow(0 0 4px rgba(255, 215, 0, 0.8));
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .snowflake,
+      #fog1, #fog2, #fog3 {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+      }
+      
+      #tapOverlay {
+        animation: none;
+      }
+      
+      .controls button,
+      #readme-link,
+      #tapOverlay button {
+        transition: none;
+      }
+    }
+
+    @media (prefers-color-scheme: dark) {
+      .controls {
+        background: rgba(10,5,0,0.85);
+        border-color: rgba(255, 215, 0, 0.4);
+      }
+      
+      #readme-link {
+        background: rgba(10,5,0,0.9);
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="bg-overlay"></div>
+
+  <div class="bg">
+    <img id="theGif" src="456.gif" alt="Background GIF" draggable="false">
+  </div>
+
+  <audio id="bgAudio" preload="metadata" loop>
+    <source src="angulimala.m4a" type="audio/mp4">
+    <source src="angulimala.mp3" type="audio/mpeg">
+    <source src="angulimala.ogg" type="audio/ogg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <div class="controls" aria-label="Audio controls">
+    <button id="playBtn" aria-label="Play audio">Play</button>
+    <button id="pauseBtn" aria-label="Pause audio">Pause</button>
+    <button id="muteBtn" aria-label="Mute audio">Mute</button>
+    <div class="volume-control">
+      <button id="volumeDownBtn" aria-label="Volume down">🔉</button>
+      <span id="volumeDisplay">70%</span>
+      <button id="volumeUpBtn" aria-label="Volume up">🔊</button>
+    </div>
+  </div>
+
+  <div id="tapOverlay" class="hidden" role="dialog" aria-modal="true">
+    <div class="message">
+      Autoplay blocked by browser.<br>
+      කතා වස්තුව ශ්‍රවනය කිරීමට මෙතන ටැප් කරන්න.
+    </div>
+    <button id="tapToPlay" aria-label="Start playing audio">Tap to Play</button>
+    <small>(ඔබට අවශ්‍යනම් mute කරලා play කරන්න.)</small>
+  </div>
+
+  <div class="bg-controls" style="position:fixed; top:80px; right:16px; z-index:25; display:none;">
+    <button onclick="setBgSize('60% auto')" style="margin:2px; padding:4px 8px; font-size:10px; background:rgba(0,0,0,0.7); color:#fff; border:1px solid #fff; border-radius:4px;">60%</button>
+    <button onclick="setBgSize('80% auto')" style="margin:2px; padding:4px 8px; font-size:10px; background:rgba(0,0,0,0.7); color:#fff; border:1px solid #fff; border-radius:4px;">80%</button>
+    <button onclick="setBgSize('100% auto')" style="margin:2px; padding:4px 8px; font-size:10px; background:rgba(0,0,0,0.7); color:#fff; border:1px solid #fff; border-radius:4px;">100%</button>
+    <button onclick="setBgSize('cover')" style="margin:2px; padding:4px 8px; font-size:10px; background:rgba(0,0,0,0.7); color:#fff; border:1px solid #fff; border-radius:4px;">Cover</button>
+  </div>
+  <div class="hint">Long-press / right-click disabled.</div>
+
+  <div id="snow" aria-hidden="true"></div>
+
+  <div id="fog1" aria-hidden="true"></div>
+  <div id="fog2" aria-hidden="true"></div>
+  <div id="fog3" aria-hidden="true"></div>
+
+  <a href="readme1.html" id="readme-link" target="_blank" rel="noopener noreferrer" aria-label="View README page">README පිටුවට යන්න</a>
+
+  <script>
+    function setVH() {
+      let vh = window.innerHeight * 0.01;
+      document.documentElement.style.setProperty('--vh', `${vh}px`);
+    }
+
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.addEventListener('dragstart', e => e.preventDefault());
+    document.addEventListener('selectstart', e => e.preventDefault());
+
+    document.addEventListener('gesturestart', e => e.preventDefault());
+    document.addEventListener('gesturechange', e => e.preventDefault());
+    document.addEventListener('gestureend', e => e.preventDefault());
+
+    let touchStartY = 0;
+    document.addEventListener('touchstart', e => {
+      if (e.touches.length > 1) {
+        e.preventDefault();
+      }
+      touchStartY = e.touches[0].clientY;
+    }, { passive: false });
+
+    document.addEventListener('touchmove', e => {
+      e.preventDefault();
+    }, { passive: false });
+
+    const audio = document.getElementById('bgAudio');
+    const overlay = document.getElementById('tapOverlay');
+    const tapBtn = document.getElementById('tapToPlay');
+    const playBtn = document.getElementById('playBtn');
+    const pauseBtn = document.getElementById('pauseBtn');
+    const muteBtn = document.getElementById('muteBtn');
+    const volumeUpBtn = document.getElementById('volumeUpBtn');
+    const volumeDownBtn = document.getElementById('volumeDownBtn');
+    const volumeDisplay = document.getElementById('volumeDisplay');
+    const snowContainer = document.getElementById('snow');
+
+    audio.volume = 0.7;
+
+    function updateVolumeDisplay() {
+      const volumePercent = Math.round(audio.volume * 100);
+      volumeDisplay.textContent = volumePercent + '%';
+    }
+
+    updateVolumeDisplay();
+
+    function tryAutoPlay() {
+      if (audio.readyState >= 2) {
+        audio.play().then(() => {
+          console.log('Audio playing automatically');
+          overlay.classList.add('hidden');
+        }).catch(error => {
+          console.log('Autoplay failed:', error);
+          overlay.classList.remove('hidden');
+        });
+      } else {
+        audio.addEventListener('canplaythrough', () => {
+          audio.play().then(() => {
+            overlay.classList.add('hidden');
+          }).catch(() => {
+            overlay.classList.remove('hidden');
+          });
+        }, { once: true });
+        
+        setTimeout(() => {
+          overlay.classList.remove('hidden');
+        }, 1000);
+      }
+    }
+
+    function userStartPlayback() {
+      audio.currentTime = 0;
+      audio.play().then(() => {
+        console.log('Audio started by user interaction');
+        overlay.classList.add('hidden');
+      }).catch(error => {
+        console.error('Audio play failed:', error);
+        alert('Audio play කරන්න බැරි වුණා. File එක check කරන්න.');
+      });
+    }
+
+    function addGestureListeners() {
+      const start = (e) => {
+        e.preventDefault();
+        userStartPlayback();
+        window.removeEventListener('click', start);
+        window.removeEventListener('touchstart', start);
+        window.removeEventListener('keydown', start);
+      };
+      window.addEventListener('click', start, { once: true, passive: false });
+      window.addEventListener('touchstart', start, { once: true, passive: false });
+      window.addEventListener('keydown', start, { once: true });
+    }
+
+    tapBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      userStartPlayback();
+    });
+    
+    tapBtn.addEventListener('touchend', (e) => {
+      e.preventDefault();
+      e.stopPropagation();
+      userStartPlayback();
+    });
+    
+    playBtn.addEventListener('click', () => {
+      audio.play().then(() => {
+        console.log('Play button clicked - audio started');
+      }).catch(error => {
+        console.error('Play failed:', error);
+        alert('Play කරන්න බැරි වුණා');
+      });
+    });
+    
+    pauseBtn.addEventListener('click', () => {
+      audio.pause();
+      console.log('Audio paused');
+    });
+    
+    muteBtn.addEventListener('click', () => {
+      audio.muted = !audio.muted;
+      muteBtn.textContent = audio.muted ? 'Unmute' : 'Mute';
+      console.log('Audio muted:', audio.muted);
+    });
+
+    volumeUpBtn.addEventListener('click', () => {
+      if (audio.volume < 1) {
+        audio.volume = Math.min(1, audio.volume + 0.1);
+        updateVolumeDisplay();
+        console.log('Volume increased to:', Math.round(audio.volume * 100) + '%');
+      }
+    });
+
+    volumeDownBtn.addEventListener('click', () => {
+      if (audio.volume > 0) {
+        audio.volume = Math.max(0, audio.volume - 0.1);
+        updateVolumeDisplay();
+        console.log('Volume decreased to:', Math.round(audio.volume * 100) + '%');
+      }
+    });
+
+    audio.addEventListener('loadstart', () => console.log('Audio loading started'));
+    audio.addEventListener('canplay', () => console.log('Audio can start playing'));
+    audio.addEventListener('canplaythrough', () => console.log('Audio can play through'));
+    audio.addEventListener('error', (e) => {
+      console.error('Audio error:', e);
+      alert('Audio file load කරන්න බැරි වුණා. angulimala.m4a file එක තිබෙනවද check කරන්න.');
+    });
+    audio.addEventListener('play', () => console.log('Audio started playing'));
+    audio.addEventListener('pause', () => console.log('Audio paused'));
+    audio.addEventListener('ended', () => console.log('Audio ended'));
+
+    function createSnowflake() {
+      const snowflake = document.createElement('div');
+      snowflake.classList.add('snowflake');
+      
+      // Randomly Golden or Lemon Yellow colors mix කරනවා
+      if (Math.random() > 0.5) {
+        snowflake.classList.add('snow-gold');
+      } else {
+        snowflake.classList.add('snow-lemon');
+      }
+      
+      const isMobile = window.innerWidth <= 768;
+      const baseSize = isMobile ? 3 : 6;
+      const sizeVariation = isMobile ? 2 : 4;
+      const size = Math.random() * sizeVariation + baseSize;
+      
+      snowflake.style.width = size + 'px';
+      snowflake.style.height = size + 'px';
+      snowflake.style.left = Math.random() * 100 + 'vw';
+      
+      const duration = Math.random() * 8 + 7;
+      snowflake.style.animationName = 'fall';
+      snowflake.style.animationTimingFunction = 'ease-in-out';
+      snowflake.style.animationIterationCount = 'infinite';
+      snowflake.style.animationDuration = duration + 's';
+      snowflake.style.animationDelay = '-' + Math.random() * duration + 's';
+
+      snowContainer.appendChild(snowflake);
+
+      setTimeout(() => {
+        if (snowflake && snowflake.parentNode) {
+          snowflake.remove();
+        }
+      }, duration * 1000);
+    }
+
+    function snowFall() {
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        return;
+      }
+      
+      createSnowflake();
+      const isMobile = window.innerWidth <= 768;
+      const interval = isMobile ? 300 : 200;
+      setTimeout(snowFall, interval);
+    }
+
+    function handleOrientationChange() {
+      setTimeout(() => {
+        setVH();
+        document.body.style.display = 'none';
+        document.body.offsetHeight;
+        document.body.style.display = '';
+      }, 100);
+    }
+
+    window.addEventListener('orientationchange', handleOrientationChange);
+    window.addEventListener('resize', () => {
+      setVH();
+      clearTimeout(window.resizeTimer);
+      window.resizeTimer = setTimeout(() => {
+        setVH();
+      }, 250);
+    });
+
+    let longPressTimer;
+    let touchStartTime;
+    
+    document.addEventListener('touchstart', (e) => {
+      touchStartTime = Date.now();
+      longPressTimer = setTimeout(() => {
+        e.preventDefault();
+      }, 300);
+    }, { passive: false });
+
+    document.addEventListener('touchend', (e) => {
+      clearTimeout(longPressTimer);
+      const touchDuration = Date.now() - touchStartTime;
+      if (touchDuration > 500) {
+        e.preventDefault();
+      }
+    });
+
+    document.addEventListener('touchcancel', () => {
+      clearTimeout(longPressTimer);
+    });
+
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        if (!audio.paused) {
+          audio.pause();
+        }
+      }
+    });
+
+    function setBgSize(size) {
+      document.body.style.backgroundSize = size;
+      console.log('Background size changed to:', size);
+    }
+
+    window.addEventListener('load', () => {
+      setVH();
+      tryAutoPlay();
+      addGestureListeners();
+      
+      setTimeout(() => {
+        snowFall();
+      }, 1000);
+    });
+
+    window.addEventListener('error', (e) => {
+      console.error('Global error:', e.error);
+    });
+
+    window.addEventListener('unhandledrejection', (e) => {
+      console.error('Unhandled promise rejection:', e.reason);
+    });
+  </script>
+
+</body>
+</html>
