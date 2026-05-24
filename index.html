@@ -10,7 +10,7 @@
 
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23c8820a'/%3E%3Ccircle cx='32' cy='32' r='8' fill='%23ffd700' stroke='%23fff' stroke-width='1.5'/%3E%3Ccircle cx='32' cy='32' r='26' fill='none' stroke='%23ffd700' stroke-width='2'/%3E%3Cg stroke='%23ffd700' stroke-width='2'%3E%3Cline x1='32' y1='6' x2='32' y2='24'/%3E%3Cline x1='32' y1='40' x2='32' y2='58'/%3E%3Cline x1='6' y1='32' x2='24' y2='32'/%3E%3Cline x1='40' y1='32' x2='58' y2='32'/%3E%3Cline x1='13' y1='13' x2='25' y2='25'/%3E%3Cline x1='39' y1='39' x2='51' y2='51'/%3E%3Cline x1='51' y1='13' x2='39' y2='25'/%3E%3Cline x1='25' y1='39' x2='13' y2='51'/%3E%3C/g%3E%3C/svg%3E">
 
-  <title>ඩිජිටල් වෙසක් කලාපය - Home</title>
+  <title>ඩිජිටල් වෙසක් - Home</title>
   
   <style>
     *{margin:0;padding:0;box-sizing:border-box}
@@ -32,11 +32,12 @@
         url('bg.jpg') center center no-repeat,
         #000;
       background-size: cover;
-      background-attachment: fixed;
+      /* iOS fix: background-attachment:fixed crashes on Safari mobile */
+      background-attachment: scroll;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
     }
     
     .bg-overlay {
@@ -47,59 +48,56 @@
       pointer-events: none;
     }
 
-    /* Main Container */
     .container {
       position: relative;
       z-index: 20;
       width: 100%;
       max-width: 1200px;
-      padding: 40px 20px 20px; /* පල්ලෙහායින් හිස් ඉඩක් තැබීමට */
+      padding: 30px 20px 20px;
       text-align: center;
     }
 
-    /* Header Styling */
     header {
-      margin-bottom: 45px;
+      margin-bottom: 30px;
       animation: fadeInDown 1s ease;
     }
 
     header h1 {
-      font-size: 2.6rem;
+      font-size: 2rem;
       font-weight: 700;
       color: #ffd700;
       text-shadow: 0 0 20px rgba(254, 215, 0, 0.6), 0 2px 4px rgba(0,0,0,0.8);
-      margin-bottom: 12px;
+      margin-bottom: 8px;
       letter-spacing: 1px;
     }
 
-    /* Pahala visthara (Description text) */
     .header-desc {
-      font-size: 1.1rem;
+      font-size: 0.95rem;
       color: #e0e0e0;
-      max-width: 600px;
+      max-width: 520px;
       margin: 0 auto;
-      line-height: 1.6;
+      line-height: 1.5;
       text-shadow: 0 2px 5px rgba(0,0,0,0.9);
     }
 
-    /* Buddha Image Container */
     .buddha-image-container {
       display: flex;
       justify-content: center;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
+      padding-top: 10px;
     }
 
     .buddha-main-img {
-      width: 140px;
+      width: 90px;
       height: auto;
       object-fit: contain;
-      filter: drop-shadow(0 0 25px rgba(255, 215, 0, 0.8));
+      filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8));
       -webkit-user-drag: none;
       user-select: none;
       pointer-events: none;
+      display: block;
     }
 
-    /* Music Floating Control Button */
     .music-control {
       position: fixed;
       bottom: 20px;
@@ -130,17 +128,15 @@
       height: 20px;
     }
 
-    /* Thorana Grid Layout */
     .thorana-grid {
       display: flex;
       justify-content: center;
       gap: 40px;
       flex-wrap: wrap;
       width: 100%;
-      margin-bottom: 40px; /* Footer එක සහ Card අතර පරතරය */
+      margin-bottom: 40px;
     }
 
-    /* Card Styling */
     .thorana-card {
       background: rgba(15, 15, 15, 0.75);
       border: 1px solid rgba(255, 215, 0, 0.2);
@@ -181,7 +177,6 @@
       opacity: 1;
     }
 
-    /* Preview Box with GIF */
     .preview-box {
       width: 100%;
       height: 380px;
@@ -205,7 +200,6 @@
       transform: scale(1.05);
     }
 
-    /* Details inside Card */
     .thorana-details {
       padding: 25px 20px;
       width: 100%;
@@ -221,7 +215,6 @@
       text-shadow: 0 2px 4px rgba(0,0,0,0.5);
     }
 
-    /* View Button */
     .view-btn {
       display: inline-flex;
       align-items: center;
@@ -247,24 +240,96 @@
       transform: scale(1.02);
     }
 
-    /* Footer Styling */
+    .visitor-counter {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      background: rgba(255, 215, 0, 0.05);
+      border: 1px solid rgba(255, 215, 0, 0.25);
+      padding: 10px 22px;
+      border-radius: 30px;
+      margin: 25px auto 10px auto;
+      font-size: 1rem;
+      color: #e0e0e0;
+      text-shadow: 0 1px 3px rgba(0,0,0,0.8);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    }
+
+    .visitor-count-num {
+      color: #ffd700;
+      font-weight: bold;
+      letter-spacing: 1px;
+      background: rgba(0, 0, 0, 0.5);
+      padding: 3px 10px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 215, 0, 0.4);
+      font-family: 'Courier New', Courier, monospace;
+      font-size: 1.1rem;
+    }
+
+    /* Contact Buttons */
+    .contact-section {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin: 10px 0 18px;
+    }
+    .contact-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      padding: 10px 20px;
+      border-radius: 50px;
+      background: rgba(15, 15, 15, 0.75);
+      border: 1px solid rgba(255, 215, 0, 0.35);
+      color: #ffd700;
+      text-decoration: none;
+      font-size: 13px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    }
+    .contact-btn:hover {
+      transform: translateY(-3px);
+      border-color: #ffd700;
+      box-shadow: 0 6px 20px rgba(255,215,0,0.25);
+      background: rgba(255,215,0,0.1);
+    }
+    .contact-btn.fb:hover {
+      background: rgba(24, 119, 242, 0.2);
+      border-color: #1877f2;
+      box-shadow: 0 0 18px rgba(24, 119, 242, 0.6), 0 6px 20px rgba(24,119,242,0.3);
+      color: #6aadff;
+    }
+    .contact-btn.tt:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: #fff;
+      box-shadow: 0 0 18px rgba(255, 255, 255, 0.3), 0 6px 20px rgba(255,255,255,0.1);
+      color: #fff;
+    }
+    .contact-btn.wa:hover {
+      background: rgba(37, 211, 102, 0.2);
+      border-color: #25D366;
+      box-shadow: 0 0 18px rgba(37, 211, 102, 0.6), 0 6px 20px rgba(37,211,102,0.3);
+      color: #25D366;
+    }
+
     footer {
-      width: 100%;
-      text-align: center;
-      color: #888888;
       font-size: 0.9rem;
       padding: 20px 0;
-      margin-top: auto; /* අනිවාර්යයෙන්ම පිටුවේ පහළින්ම රඳවා ගැනීමට */
+      margin-top: auto;
       z-index: 20;
       font-family: Arial, sans-serif;
       text-shadow: 0 1px 3px rgba(0,0,0,0.8);
       -webkit-user-select: none;
       -moz-user-select: none;
       -ms-user-select: none;
-      user-select: none; /* අකුරු select වීම වැළැක්වීම */
+      user-select: none;
     }
 
-    /* Effects Styles */
     #snow {
       pointer-events: none;
       position: fixed;
@@ -335,17 +400,68 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Mobile Responsive Setup */
-    @media (max-width: 768px) {
-      header h1 { font-size: 2rem; }
-      .header-desc { font-size: 0.95rem; padding: 0 10px; }
-      .thorana-grid { gap: 25px; margin-bottom: 30px; }
-      .thorana-card { width: 290px; }
+    /* ── Desktop only: fixed background ── */
+    @media (min-width: 1025px) {
+      body { background-attachment: fixed; justify-content: center; }
+    }
+
+    /* ── Tablet landscape / small desktop (769px – 1024px) ── */
+    @media (max-width: 1024px) and (min-width: 769px) {
+      .container { padding: 25px 20px 20px; }
+      .thorana-grid { gap: 24px; }
+      .thorana-card { width: 300px; }
       .preview-box { height: 320px; }
-      .view-btn { padding: 12px 20px; font-size: 14px; }
-      .buddha-image-container { margin-bottom: 15px; }
-      .buddha-main-img { width: 105px; }
-      footer { font-size: 0.8rem; padding: 15px 0; }
+      header h1 { font-size: 1.8rem; }
+      .header-desc { font-size: 0.9rem; }
+      .buddha-main-img { width: 80px; }
+    }
+
+    /* ── Tablet portrait / large phone (481px – 768px) ── */
+    @media (max-width: 768px) {
+      .container { padding: 15px 14px 20px; }
+      header { margin-bottom: 18px; }
+      header h1 { font-size: 1.55rem; margin-bottom: 6px; }
+      .header-desc { font-size: 0.84rem; padding: 0 6px; line-height: 1.45; }
+      .thorana-grid { gap: 16px; margin-bottom: 20px; }
+      .thorana-card { width: calc(100% - 10px); max-width: 360px; }
+      .preview-box { height: 260px; }
+      .thorana-details { padding: 14px 14px; gap: 10px; }
+      .thorana-details h2 { font-size: 1.1rem; }
+      .view-btn { padding: 11px 18px; font-size: 13.5px; }
+      .buddha-image-container { margin-bottom: 10px; padding-top: 5px; }
+      .buddha-main-img { width: 65px; }
+      .visitor-counter { font-size: 0.85rem; padding: 8px 14px; margin: 14px auto 8px; }
+      .contact-section { gap: 9px; margin: 8px 0 14px; }
+      .contact-btn { padding: 9px 16px; font-size: 12.5px; }
+      footer { font-size: 0.78rem; padding: 14px 0; }
+      .music-control { width: 40px; height: 40px; bottom: 15px; right: 15px; }
+    }
+
+    /* ── Small phones (≤ 480px) ── */
+    @media (max-width: 480px) {
+      .container { padding: 12px 10px 16px; }
+      header { margin-bottom: 14px; }
+      header h1 { font-size: 1.35rem; letter-spacing: 0; }
+      .header-desc { font-size: 0.78rem; }
+      .thorana-card { width: 100%; max-width: 100%; border-radius: 14px; }
+      .preview-box { height: 220px; }
+      .thorana-details h2 { font-size: 1rem; }
+      .view-btn { width: 100%; font-size: 13px; padding: 12px 10px; }
+      .buddha-main-img { width: 56px; }
+      .visitor-counter { font-size: 0.8rem; padding: 7px 12px; }
+      .contact-section { flex-direction: row; justify-content: center; gap: 8px; }
+      .contact-btn { padding: 8px 13px; font-size: 12px; }
+      footer { font-size: 0.72rem; }
+      .music-control { width: 38px; height: 38px; bottom: 12px; right: 12px; }
+    }
+
+    /* ── Very small phones (≤ 360px) ── */
+    @media (max-width: 360px) {
+      header h1 { font-size: 1.2rem; }
+      .header-desc { font-size: 0.74rem; }
+      .preview-box { height: 190px; }
+      .contact-btn { padding: 7px 11px; font-size: 11px; }
+      .visitor-count-num { font-size: 0.95rem; }
     }
   </style>
 </head>
@@ -390,14 +506,35 @@
           <img src="123.gif" alt="Thorana 2 Preview" loading="lazy">
         </div>
         <div class="thorana-details">
-          <h2>02. |වෙස්සන්තර කථා වස්තුව</h2>
+          <h2>02. වෙස්සන්තර කථා වස්තුව</h2>
           <a href="thorana2.html" class="view-btn">තොරණ නරඹන්න (View)</a>
         </div>
       </div>
     </div>
 
+    <div class="visitor-counter">
+      <span>නරඹන්නන් සංඛ්‍යාව:</span>
+      <span id="visitorCount" class="visitor-count-num">ලෝඩ් වෙනවා...</span>
+    </div>
+
+    <!-- Contact Buttons -->
+    <div class="contact-section">
+      <a href="https://www.facebook.com/profile.php?id=61552332803796" target="_blank" class="contact-btn fb">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="#1877f2"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
+        Facebook
+      </a>
+      <a href="https://vm.tiktok.com/ZSSVar6r3/" target="_blank" class="contact-btn tt">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="#fff"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.32 6.32 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.69a8.18 8.18 0 004.78 1.52V6.78a4.85 4.85 0 01-1.01-.09z"/></svg>
+        TikTok
+      </a>
+      <a href="https://wa.me/94717472209" target="_blank" class="contact-btn wa">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        WhatsApp
+      </a>
+    </div>
+
     <footer>
-      © 2026 Thilina Ananda. All rights reserved.
+      &copy; 2026 Thilina Ananda. All rights reserved.
     </footer>
   </div>
 
@@ -406,6 +543,7 @@
   <div id="fog2" aria-hidden="true"></div>
 
   <script>
+    // --- Viewport Height Fix ---
     function setVH() {
       let vh = window.innerHeight * 0.01;
       document.documentElement.style.setProperty('--vh', `${vh}px`);
@@ -413,6 +551,7 @@
     window.addEventListener('resize', setVH);
     setVH();
 
+    // --- Copy & Drag Protection ---
     document.addEventListener('contextmenu', e => {
       if (!e.target.closest('.view-btn') && !e.target.closest('.music-control')) e.preventDefault();
     });
@@ -453,43 +592,67 @@
       }
     }, { once: true });
 
-
-    // --- Color Mixing Snowfall Engine ---
+    // --- Snowfall Engine ---
     const snowContainer = document.getElementById('snow');
+
     function createSnowflake() {
       const snowflake = document.createElement('div');
       snowflake.classList.add('snowflake');
-      
-      if (Math.random() > 0.5) {
-        snowflake.classList.add('snow-white');
-      } else {
-        snowflake.classList.add('snow-yellow');
-      }
-      
+      snowflake.classList.add(Math.random() > 0.5 ? 'snow-white' : 'snow-yellow');
+
       const isMobile = window.innerWidth <= 768;
-      const baseSize = isMobile ? 2 : 4;
-      const size = Math.random() * 3 + baseSize;
-      
+      const size = Math.random() * 3 + (isMobile ? 2 : 4);
+
       snowflake.style.width = size + 'px';
       snowflake.style.height = size + 'px';
       snowflake.style.left = Math.random() * 100 + 'vw';
-      
+
       const duration = Math.random() * 8 + 7;
       snowflake.style.animationDuration = duration + 's';
       snowflake.style.animationDelay = '-' + Math.random() * duration + 's';
 
       snowContainer.appendChild(snowflake);
-      setTimeout(() => { snowflake.remove(); }, duration * 1000);
+      setTimeout(() => snowflake.remove(), duration * 1000);
     }
 
     function snowFall() {
       createSnowflake();
       setTimeout(snowFall, window.innerWidth <= 768 ? 300 : 150);
     }
-    
-    window.addEventListener('load', () => {
-      setTimeout(snowFall, 500);
-    });
+
+    window.addEventListener('load', () => setTimeout(snowFall, 500));
+
+    // --- Real Visitor Counter (counterapi.dev) ---
+    function initVisitorCounter() {
+      const el = document.getElementById('visitorCount');
+
+      // counterapi.dev: free, no setup, atomic increment
+      fetch('https://api.counterapi.dev/v1/thilina-vesak-2026/visits/up')
+        .then(res => {
+          if (!res.ok) throw new Error('API Error: ' + res.status);
+          return res.json();
+        })
+        .then(data => {
+          if (data && typeof data.count === 'number') {
+            el.innerText = data.count.toLocaleString();
+          } else {
+            throw new Error('Invalid response');
+          }
+        })
+        .catch(err => {
+          console.error("Counter Error:", err);
+          // Fallback: try to show a localStorage-based local count
+          try {
+            let local = parseInt(localStorage.getItem('vc') || '0') + 1;
+            localStorage.setItem('vc', local);
+            el.innerText = local.toLocaleString();
+          } catch(e) {
+            el.innerText = "—";
+          }
+        });
+    }
+
+    window.addEventListener('DOMContentLoaded', initVisitorCounter);
   </script>
 
 </body>
