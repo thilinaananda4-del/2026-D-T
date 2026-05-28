@@ -2,315 +2,406 @@
 <html lang="si">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" />
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#000000">
+
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23c8820a'/%3E%3Ccircle cx='32' cy='32' r='8' fill='%23ffd700' stroke='%23fff' stroke-width='1.5'/%3E%3Ccircle cx='32' cy='32' r='26' fill='none' stroke='%23ffd700' stroke-width='2'/%3E%3Cg stroke='%23ffd700' stroke-width='2'%3E%3Cline x1='32' y1='6' x2='32' y2='24'/%3E%3Cline x1='32' y1='40' x2='32' y2='58'/%3E%3Cline x1='6' y1='32' x2='24' y2='32'/%3E%3Cline x1='40' y1='32' x2='58' y2='32'/%3E%3Cline x1='13' y1='13' x2='25' y2='25'/%3E%3Cline x1='39' y1='39' x2='51' y2='51'/%3E%3Cline x1='51' y1='13' x2='39' y2='25'/%3E%3Cline x1='25' y1='39' x2='13' y2='51'/%3E%3C/g%3E%3C/svg%3E">
   <link rel="shortcut icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23c8820a'/%3E%3Ccircle cx='32' cy='32' r='8' fill='%23ffd700' stroke='%23fff' stroke-width='1.5'/%3E%3Ccircle cx='32' cy='32' r='26' fill='none' stroke='%23ffd700' stroke-width='2'/%3E%3Cg stroke='%23ffd700' stroke-width='2'%3E%3Cline x1='32' y1='6' x2='32' y2='24'/%3E%3Cline x1='32' y1='40' x2='32' y2='58'/%3E%3Cline x1='6' y1='32' x2='24' y2='32'/%3E%3Cline x1='40' y1='32' x2='58' y2='32'/%3E%3Cline x1='13' y1='13' x2='25' y2='25'/%3E%3Cline x1='39' y1='39' x2='51' y2='51'/%3E%3Cline x1='51' y1='13' x2='39' y2='25'/%3E%3Cline x1='25' y1='39' x2='13' y2='51'/%3E%3C/g%3E%3C/svg%3E">
-  
+
   <title>README පිටුව</title>
 
-  <link
-    rel="stylesheet"
-    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
-    crossorigin="anonymous"
-  />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" />
 
   <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    :root { --vh: 1vh; }
+
+    html, body {
+      min-height: 100vh;
+      min-height: calc(var(--vh, 1vh) * 100);
+      overflow-x: hidden;
+    }
+
     body {
       font-family: Arial, sans-serif;
       background: linear-gradient(135deg, #000000, #140f05, #281a04);
       color: #f0f4f8;
-      padding: 40px 20px 80px;
-      max-width: 700px;
-      margin: 60px auto;
-      border-radius: 16px;
-      box-shadow: 0 0 25px rgba(200, 130, 10, 0.4), 0 0 50px rgba(0, 0, 0, 0.8);
-      border: 1px solid rgba(255, 215, 0, 0.2);
-      text-align: center;
-      position: relative;
-      min-height: 100vh;
-      box-sizing: border-box;
-
-      /* පිටුවේ අකුරු select කිරීම වැළැක්වීම */
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      padding: 40px 20px 90px;
       -webkit-user-select: none;
       -moz-user-select: none;
-      -ms-user-select: none;
       user-select: none;
+      overscroll-behavior: none;
     }
 
-    /* බුදු රුවේ පින්තූරය සඳහා ස්ටයිල් */
+    /* Snow */
+    #snow {
+      pointer-events: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100vh;
+      z-index: 1;
+    }
+    .snowflake {
+      position: absolute;
+      top: -10px;
+      border-radius: 50%;
+      animation-name: fall;
+      animation-timing-function: ease-in-out;
+      animation-iteration-count: infinite;
+      will-change: transform;
+    }
+    .snow-white {
+      background: radial-gradient(circle, #fff 0%, #f0f8ff 100%);
+      opacity: 0.7;
+      filter: drop-shadow(0 0 4px rgba(255,255,255,0.9));
+    }
+    .snow-yellow {
+      background: radial-gradient(circle, #ffd700 0%, #ffaa00 100%);
+      opacity: 0.8;
+      filter: drop-shadow(0 0 6px rgba(255,215,0,0.9));
+    }
+    @keyframes fall {
+      0%   { transform: translateY(-20px) translateX(0) rotate(0deg); opacity: 0.8; }
+      50%  { opacity: 0.5; }
+      100% { transform: translateY(calc(100vh + 20px)) translateX(30px) rotate(360deg); opacity: 0.1; }
+    }
+
+    /* Card */
+    .card {
+      width: 100%;
+      max-width: 680px;
+      background: rgba(10, 7, 2, 0.78);
+      border: 1px solid rgba(255, 215, 0, 0.2);
+      border-radius: 20px;
+      padding: 40px 32px 36px;
+      text-align: center;
+      box-shadow: 0 0 30px rgba(200, 130, 10, 0.35), 0 0 60px rgba(0,0,0,0.8);
+      backdrop-filter: blur(12px);
+      position: relative;
+      z-index: 10;
+      animation: fadeInUp 1s ease;
+    }
+
+    /* Buddha */
     .buddha-container {
-      margin-bottom: 15px;
-      animation: fadeInDown 1.5s ease;
+      margin-bottom: 18px;
+      animation: fadeInDown 1.2s ease;
     }
     .buddha-img {
-      width: 140px;
+      width: 120px;
       height: auto;
-      border-radius: 8px;
-      filter: drop-shadow(0 0 15px rgba(255, 215, 0, 0.65)); 
-      -webkit-touch-callout: none; 
+      filter: drop-shadow(0 0 18px rgba(255,215,0,0.75));
       pointer-events: none;
+      -webkit-touch-callout: none;
     }
 
+    /* Headings */
     h1 {
-      font-size: 2.5rem;
-      margin-bottom: 20px;
+      font-size: 2.2rem;
+      margin-bottom: 8px;
       color: #ffd700;
-      text-shadow: 0 0 12px rgba(255, 215, 0, 0.7);
-      animation: fadeInDown 1.5s ease;
+      text-shadow: 0 0 14px rgba(255,215,0,0.7);
+      animation: fadeInDown 1.2s ease;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 15px;
+      gap: 12px;
     }
     h2 {
+      font-size: 1.5rem;
       color: #ffd700;
-      text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-      animation: fadeInUp 1.5s ease;
+      text-shadow: 0 0 10px rgba(255,215,0,0.5);
+      animation: fadeInUp 1.3s ease;
+      margin-bottom: 4px;
     }
-    h3, h4 {
-      color: #e0e0e0;
-      animation: fadeInUp 1.5s ease;
-    }
+    h3 { font-size: 1rem; color: #ccc; animation: fadeInUp 1.3s ease; margin-bottom: 2px; }
+    h4 { font-size: 0.9rem; color: #aaa; animation: fadeInUp 1.3s ease; margin-bottom: 18px; }
+
     p {
-      font-size: 1.1rem;
-      line-height: 1.5;
-      margin-bottom: 30px;
-      text-shadow: 0 0 6px rgba(0, 0, 0, 0.9);
-      animation: fadeIn 2s ease;
-    }
-    a.button {
-      display: inline-block;
-      padding: 12px 24px;
-      background: linear-gradient(45deg, #c8820a, #ffd700);
-      color: #000000;
-      border-radius: 10px;
-      font-weight: 700;
       font-size: 1rem;
+      line-height: 1.65;
+      margin-bottom: 16px;
+      text-shadow: 0 0 6px rgba(0,0,0,0.9);
+      animation: fadeIn 1.5s ease;
+    }
+
+    /* Credits */
+    .credits-box {
+      text-align: left;
+      display: inline-block;
+      margin: 6px 0 24px;
+      background: rgba(255,255,255,0.04);
+      padding: 14px 18px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,215,0,0.15);
+      box-shadow: 0 0 15px rgba(0,0,0,0.5);
+      animation: fadeIn 1.5s ease;
+      width: 100%;
+      max-width: 440px;
+    }
+    .credits-box dd {
+      margin-bottom: 8px;
+      font-size: 0.92rem;
+      color: #ddd;
+      line-height: 1.5;
+    }
+    .credits-box dd:last-child { margin-bottom: 0; }
+
+    /* Back button */
+    a.button {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 28px;
+      background: linear-gradient(45deg, #c8820a, #ffd700);
+      color: #000;
+      border-radius: 50px;
+      font-weight: 700;
+      font-size: 0.95rem;
       text-decoration: none;
-      box-shadow: 0 4px 15px rgba(255, 215, 0, 0.3);
-      transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
-      margin-bottom: 40px;
+      box-shadow: 0 4px 15px rgba(255,215,0,0.3);
+      transition: all 0.3s ease;
+      margin-bottom: 28px;
       animation: pulse 2s infinite;
       pointer-events: auto;
     }
     a.button:hover {
       background: linear-gradient(45deg, #ffd700, #c8820a);
-      box-shadow: 0 6px 25px rgba(255, 215, 0, 0.5);
-    }
-    dl {
-      text-align: left;
-      display: inline-block;
-      margin-top: 20px;
-      background: rgba(255, 255, 255, 0.05);
-      padding: 15px;
-      border-radius: 10px;
-      border: 1px solid rgba(255, 215, 0, 0.15);
-      box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
-      animation: fadeIn 2s ease;
-    }
-    dl dd {
-      margin-bottom: 8px;
-    }
-    .social-links {
-      display: flex;
-      justify-content: center;
-      gap: 20px;
-      flex-wrap: wrap;
-      margin-top: 20px;
-    }
-    .social-links a {
-      font-size: 26px;
-      color: #ffd700;
-      text-decoration: none;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background: rgba(20, 15, 5, 0.8);
-      border: 1px solid rgba(255, 215, 0, 0.3);
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
-      transition: all 0.3s ease;
-      pointer-events: auto;
-    }
-    .social-links a:hover {
-      color: #fff;
-    }
-    .social-links a.facebook:hover {
-      background: #3b5998;
-      box-shadow: 0 0 20px #3b5998;
-      border-color: #3b5998;
-    }
-    .social-links a.tiktok:hover {
-      background: #000;
-      box-shadow: 0 0 20px rgba(255,255,255,0.2);
-      border-color: #fff;
-    }
-    .social-links a.whatsapp:hover {
-      background: #25D366;
-      box-shadow: 0 0 20px #25D366;
-      border-color: #25D366;
-    }
-    footer {
-      position: fixed;
-      bottom: 10px;
-      left: 0;
-      width: 100%;
-      text-align: center;
-      color: #888;
-      font-size: 0.85rem;
-      user-select: none;
-      pointer-events: none;
-      font-family: Arial, sans-serif;
-      text-shadow: 0 0 4px rgba(0,0,0,0.8);
+      box-shadow: 0 6px 25px rgba(255,215,0,0.5);
+      transform: translateY(-2px);
     }
 
-    /* Right Click Alert Toast */
+    /* Contact buttons */
+    .contact-section {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 4px;
+    }
+    .contact-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 22px;
+      border-radius: 50px;
+      background: rgba(20, 15, 5, 0.85);
+      border: 1px solid rgba(255,215,0,0.35);
+      color: #ffd700;
+      font-size: 14px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      pointer-events: auto;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+    .contact-btn i { font-size: 18px; }
+    .contact-btn:hover { transform: translateY(-3px); }
+    .contact-btn.facebook:hover {
+      background: rgba(24,119,242,0.2);
+      border-color: #1877f2;
+      color: #6aadff;
+      box-shadow: 0 0 18px rgba(24,119,242,0.6), 0 6px 20px rgba(24,119,242,0.3);
+    }
+    .contact-btn.tiktok:hover {
+      background: rgba(255,255,255,0.08);
+      border-color: #fff;
+      color: #fff;
+      box-shadow: 0 0 18px rgba(255,255,255,0.3), 0 6px 20px rgba(255,255,255,0.1);
+    }
+    .contact-btn.whatsapp:hover {
+      background: rgba(37,211,102,0.2);
+      border-color: #25D366;
+      color: #25D366;
+      box-shadow: 0 0 18px rgba(37,211,102,0.6), 0 6px 20px rgba(37,211,102,0.3);
+    }
+
+    /* Right Click Alert */
     .custom-alert {
       position: fixed;
-      top: 20px;
-      left: 50%;
+      top: 20px; left: 50%;
       transform: translateX(-50%);
-      background: rgba(255, 215, 0, 0.9);
+      background: rgba(255,215,0,0.92);
       color: #000;
-      padding: 10px 20px;
+      padding: 10px 22px;
       border-radius: 20px;
       font-weight: bold;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       box-shadow: 0 4px 15px rgba(0,0,0,0.5);
       z-index: 9999;
       display: none;
-      animation: alertFadeIn 0.3s ease;
+    }
+
+    /* Footer */
+    footer {
+      position: fixed;
+      bottom: 10px; left: 0;
+      width: 100%;
+      text-align: center;
+      color: #777;
+      font-size: 0.82rem;
+      pointer-events: none;
+      user-select: none;
+      z-index: 20;
+      text-shadow: 0 0 4px rgba(0,0,0,0.8);
     }
 
     /* Animations */
-    @keyframes fadeIn {
-      from { opacity: 0; }
-      to { opacity: 1; }
-    }
-    @keyframes fadeInDown {
-      from { opacity: 0; transform: translateY(-20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes alertFadeIn {
-      from { opacity: 0; transform: translate(-50%, -20px); }
-      to { opacity: 1; transform: translate(-50%, 0); }
-    }
-    @keyframes fadeInUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes pulse {
-      0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.03); }
+    @keyframes fadeIn     { from { opacity:0; } to { opacity:1; } }
+    @keyframes fadeInDown { from { opacity:0; transform:translateY(-20px); } to { opacity:1; transform:translateY(0); } }
+    @keyframes fadeInUp   { from { opacity:0; transform:translateY(20px);  } to { opacity:1; transform:translateY(0); } }
+    @keyframes alertFadeIn{ from { opacity:0; transform:translate(-50%,-20px); } to { opacity:1; transform:translate(-50%,0); } }
+    @keyframes pulse      { 0%,100% { transform:scale(1); } 50% { transform:scale(1.03); } }
+
+    /* Tablet (≤768px) */
+    @media (max-width: 768px) {
+      body { padding: 20px 14px 80px; }
+      .card { padding: 28px 18px 28px; border-radius: 16px; }
+      .buddha-img { width: 95px; }
+      h1 { font-size: 1.7rem; gap: 10px; }
+      h2 { font-size: 1.25rem; }
+      p  { font-size: 0.93rem; }
+      a.button { font-size: 0.88rem; padding: 11px 22px; }
+      .contact-btn { padding: 9px 16px; font-size: 13px; }
+      .contact-btn i { font-size: 16px; }
+      .credits-box dd { font-size: 0.85rem; }
     }
 
-    /* Mobile responsive styles */
-    @media (max-width: 600px) {
-      body {
-        padding: 20px;
-        margin: 20px auto;
-        border-radius: 10px;
-      }
-      .buddha-img {
-        width: 100px;
-      }
-      h1 {
-        font-size: 1.8rem;
-        gap: 10px;
-      }
-      p {
-        font-size: 1rem;
-      }
-      a.button {
-        font-size: 0.9rem;
-        padding: 10px 18px;
-      }
-      .social-links a {
-        width: 44px;
-        height: 44px;
-        font-size: 22px;
-      }
-      footer {
-        font-size: 0.75rem;
-      }
+    /* Small phones (≤480px) */
+    @media (max-width: 480px) {
+      body { padding: 14px 10px 75px; }
+      .card { padding: 22px 13px 24px; border-radius: 14px; }
+      .buddha-img { width: 78px; }
+      h1 { font-size: 1.38rem; gap: 8px; }
+      h2 { font-size: 1.1rem; }
+      h3 { font-size: 0.88rem; }
+      h4 { font-size: 0.82rem; }
+      p  { font-size: 0.86rem; margin-bottom: 12px; }
+      a.button { font-size: 0.84rem; padding: 10px 18px; margin-bottom: 20px; }
+      .contact-section { gap: 8px; }
+      .contact-btn { padding: 8px 13px; font-size: 12px; }
+      .contact-btn i { font-size: 15px; }
+      footer { font-size: 0.72rem; }
+    }
+
+    /* Very small (≤360px) */
+    @media (max-width: 360px) {
+      h1 { font-size: 1.15rem; }
+      .contact-btn span { display: none; }
+      .contact-btn { padding: 10px 14px; }
+      .contact-btn i { font-size: 19px; }
     }
   </style>
 </head>
 <body>
 
-  <div id="rightClickAlert" class="custom-alert">Right Click Disabled!</div>
+  <div id="rightClickAlert" class="custom-alert">Right Click Disabled! 🔒</div>
+  <div id="snow" aria-hidden="true"></div>
 
-  <div class="buddha-container">
-    <img src="buddha.png" alt="Budhu Ruwa" class="buddha-img" oncontextmenu="return false;" />
+  <div class="card">
+
+    <div class="buddha-container">
+      <img src="buddha.png" alt="Budhu Ruwa" class="buddha-img" oncontextmenu="return false;" />
+    </div>
+
+    <h1>
+      <i class="fas fa-dharmachakra"></i>
+      අංගුලිමාල කතා පුවත
+    </h1>
+    <h3>රැගත්</h3>
+    <h2>Digital තොරණ</h2>
+    <h4>මා විසින් ප්‍රථම වරට නිර්මාණය කෙරූ</h4>
+
+    <p>අංගුලිමාල කතා පුවත රැගත් ඩිජිටල් තොරණ් රාජයා දැක ඔබත් පිං සිතුවිලි උපදවා ගනිත්වා.</p>
+    <p><font color="#ffd700">විරිදු සුරල් සහ රූප සටහන් වල හිමිකම මුල් හිමිකරුවන් සතුවේ.</font></p>
+
+    <dl class="credits-box">
+      <dd>🎵 විරිදු සුරල් ගායනය &mdash; M.V ගුණදාස ශූරීන්.</dd>
+      <dd>📷 ඡායාරූප &mdash; අන්තර්ජාලයෙනි.</dd>
+      <dd>💡 ආලෝක රටා සහ වෙබ් නිර්මාණය &mdash; තිලින ආනන්ද.</dd>
+    </dl>
+
+    <br>
+    <a href="index.html" class="button">
+      <i class="fas fa-home"></i> නැවත තොරණ වෙත පිවිසෙන්න
+    </a>
+
+    <div class="contact-section">
+      <a href="https://www.facebook.com/profile.php?id=61552332803796" target="_blank" class="contact-btn facebook">
+        <i class="fa-brands fa-facebook-f"></i><span>Facebook</span>
+      </a>
+      <a href="https://vm.tiktok.com/ZSSVar6r3/" target="_blank" class="contact-btn tiktok">
+        <i class="fa-brands fa-tiktok"></i><span>TikTok</span>
+      </a>
+      <a href="https://wa.me/94717472209" target="_blank" class="contact-btn whatsapp">
+        <i class="fa-brands fa-whatsapp"></i><span>WhatsApp</span>
+      </a>
+    </div>
+
   </div>
 
-  <h1>
-    <i class="fas fa-dharmachakra"></i>
-    අංගුලිමාල කතා  පුවත
-  </h1>
-  <h3>රැගත්</h3>
-  <h2>Digital තොරණ</h2>
-  <h4>මා ව්සින් ප්‍රථම වරට නිර්මානය කෙරූ</h4>
-  <p>අංගුලිමාල කතා පුවත රැගත් ඞිජිටල් තොරණ් රාජයා දැක ඔබත් පිං සිතුවිලි උපදවා ගනිත්වා.</p>
-  <p><font color="#ffd700">විරිදු සුරල් සහ රූප සටහන් වල හිමිකම මුල් හිමිකරුවන් සතුවේ.</font></p>
-
-  <dl>
-    <dd>විරිදු සුරල් ගායනය - M.V ගුණදාස ශූරීන්.</dd>
-    <dd>ඡායාරූප - අන්තර්ජාලයෙනි.</dd>
-    <dd>ආලෝක රටා සහ වෙබ් නිර්මාණය - තිලින ආනන්ද.</dd>
-  </dl>
-
-  <br><br>
-  <a href="index.html" class="button">නැවත තොරණ වෙත පිවිසෙන්න</a>
-
-  <div class="social-links">
-    <a href="https://www.facebook.com/profile.php?id=61552332803796" target="_blank" class="facebook">
-      <i class="fa-brands fa-facebook-f"></i>
-    </a>
-    <a href="https://vm.tiktok.com/ZSSVar6r3/" target="_blank" class="tiktok">
-      <i class="fa-brands fa-tiktok"></i>
-    </a>
-    <a href="https://wa.me/94717472209" target="_blank" class="whatsapp">
-      <i class="fa-brands fa-whatsapp"></i>
-    </a>
-  </div>
-
-  <footer>
-    © 2026 Thilina Ananda. All rights reserved.
-  </footer>
+  <footer>&copy; 2026 Thilina Ananda. All rights reserved.</footer>
 
   <script>
+    // Viewport height fix
+    function setVH() {
+      document.documentElement.style.setProperty('--vh', window.innerHeight * 0.01 + 'px');
+    }
+    window.addEventListener('resize', setVH);
+    setVH();
+
+    // Right click & drag protection
     const alertBox = document.getElementById('rightClickAlert');
     let alertTimer;
-
     function showAlert(e) {
-      e.preventDefault(); 
+      e.preventDefault();
       alertBox.style.display = 'block';
-      
       clearTimeout(alertTimer);
-      alertTimer = setTimeout(() => {
-        alertBox.style.display = 'none';
-      }, 1500);
+      alertTimer = setTimeout(() => { alertBox.style.display = 'none'; }, 1500);
     }
-
-    // මුළු පිටුවටම Right Click අක්‍රීය කිරීම
     document.addEventListener('contextmenu', showAlert);
+    document.addEventListener('dragstart', e => e.preventDefault());
+    document.addEventListener('selectstart', e => {
+      if (!e.target.closest('.contact-btn') && !e.target.closest('a.button')) e.preventDefault();
+    });
 
-    // Mobile දුරකථන වල Long Press වැළැක්වීම
+    // Mobile long press protection
     document.addEventListener('touchstart', function(e) {
       if (e.target.tagName === 'IMG') {
-        window.longPressTimer = setTimeout(function() {
-          e.preventDefault();
-        }, 300);
+        window.longPressTimer = setTimeout(() => e.preventDefault(), 300);
       }
     }, { passive: false });
+    document.addEventListener('touchend', () => clearTimeout(window.longPressTimer));
 
-    document.addEventListener('touchend', function() {
-      clearTimeout(window.longPressTimer);
-    });
+    // Snow effect
+    const snowContainer = document.getElementById('snow');
+    function createSnowflake() {
+      const flake = document.createElement('div');
+      flake.classList.add('snowflake');
+      flake.classList.add(Math.random() > 0.5 ? 'snow-white' : 'snow-yellow');
+      const isMobile = window.innerWidth <= 768;
+      const size = Math.random() * 3 + (isMobile ? 2 : 4);
+      flake.style.width  = size + 'px';
+      flake.style.height = size + 'px';
+      flake.style.left   = Math.random() * 100 + 'vw';
+      const dur = Math.random() * 8 + 7;
+      flake.style.animationDuration = dur + 's';
+      flake.style.animationDelay   = '-' + Math.random() * dur + 's';
+      snowContainer.appendChild(flake);
+      setTimeout(() => flake.remove(), dur * 1000);
+    }
+    function snowFall() {
+      createSnowflake();
+      setTimeout(snowFall, window.innerWidth <= 768 ? 300 : 160);
+    }
+    window.addEventListener('load', () => setTimeout(snowFall, 400));
   </script>
 
 </body>
