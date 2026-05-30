@@ -79,10 +79,42 @@
       text-shadow:0 0 20px rgba(255,215,0,.7),0 2px 4px rgba(0,0,0,.8);
       margin-bottom:8px;
     }
+    .header-desc-box {
+      max-width: 580px;
+      margin: 0 auto;
+      background: rgba(255, 215, 0, 0.04);
+      border: 1px solid rgba(255, 215, 0, 0.2);
+      border-radius: 16px;
+      padding: 18px 24px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4), inset 0 0 30px rgba(255,215,0,0.03);
+      text-align: center;
+    }
+
     .header-desc {
-      font-size:0.92rem; color:#ddd;
-      max-width:540px; margin:0 auto; line-height:1.6;
-      text-shadow:0 2px 5px rgba(0,0,0,.9);
+      font-family: 'Noto Sans Sinhala', 'Iskoola Pota', Arial, sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #f0d080;
+      line-height: 1.85;
+      text-shadow: 0 1px 6px rgba(0,0,0,0.9);
+      margin: 0;
+      letter-spacing: 0.2px;
+    }
+
+    .header-desc p { margin-bottom: 8px; }
+    .header-desc p:last-child { margin-bottom: 0; }
+
+    .header-desc-en {
+      font-family: 'Georgia', serif;
+      font-size: 0.8rem;
+      font-weight: 400;
+      font-style: italic;
+      color: #aaa;
+      line-height: 1.6;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255,215,0,0.15);
     }
 
     /* Back btn */
@@ -354,7 +386,9 @@
     @media(max-width:1024px) and (min-width:769px){
       .container { padding:26px 20px 20px; }
       header h1 { font-size:1.7rem; }
-      .header-desc { font-size:0.88rem; }
+      .header-desc { font-size: 0.88rem; }
+      .header-desc-en { font-size: 0.74rem; }
+      .header-desc-box { padding: 14px 18px; }
       .buddha-img { width:76px; }
       .video-grid { gap:22px; }
       .video-card { width:290px; }
@@ -366,7 +400,9 @@
       .container { padding:18px 14px 14px; }
       header { margin-bottom:20px; }
       header h1 { font-size:1.55rem; }
-      .header-desc { font-size:0.84rem; padding:0 6px; }
+      .header-desc { font-size:0.84rem; }
+      .header-desc-en { font-size:0.7rem; }
+      .header-desc-box { padding:12px 14px; border-radius:12px; }
       .buddha-img { width:68px; margin-bottom:10px; }
       .video-grid { gap:18px; margin-bottom:28px; }
       .video-card { width:100%; max-width:400px; border-radius:16px; }
@@ -390,6 +426,8 @@
       header { margin-bottom:14px; }
       header h1 { font-size:1.3rem; letter-spacing:0; }
       .header-desc { font-size:0.78rem; }
+      .header-desc-en { font-size:0.66rem; }
+      .header-desc-box { padding:11px 12px; border-radius:10px; }
       .buddha-img { width:56px; margin-bottom:8px; }
       .video-grid { gap:14px; margin-bottom:22px; }
       .video-card { width:100%; max-width:100%; border-radius:14px; }
@@ -412,6 +450,7 @@
     @media(max-width:360px){
       header h1 { font-size:1.15rem; }
       .header-desc { font-size:0.72rem; }
+      .header-desc-en { font-size:0.62rem; }
       .contact-btn span { display:none; }
       .contact-btn { padding:9px 13px; }
       .like-btn { padding:9px 16px; }
@@ -438,16 +477,20 @@
     <header>
       <img src="buddha.png" alt="Budhu Ruwa" class="buddha-img" />
       <h1>Digital පහන් කූඩු</h1>
-      <p class="header-desc"><p>තාක්ෂණයත් සමඟ වේගයෙන් ඉදිරියට යන මේ ලෝකයේ,<br>
-සම්ප්‍රදායන් රැක ගැනීමට කරන ලද පුංචි ප්‍රයත්නයක් ලෙසින් මේ නිර්මාණ ඔබ වෙත ඉදිරිපත් කරමි.</p>
-
-<p>අඩුපාඩු ඇත්නම් කරුණාකර සමාවෙන්න 🙏</p>
-
-<p>මෙම නිර්මාණ ගැන ඔබට හිතෙන දෙය, යෝජනා, අදහස්<br>
-<strong>WhatsApp</strong> හෝ <strong>Facebook</strong> මගින් මා හට එවන්න.<br>
-ඔබේ අදහස මේ නිර්මාණ තවදුරටත් දියුණු කරගැනීමට මට ලොකු රුකුලක් වේවි.</p>
-
-<p>ස්තූතියි!<br></p>
+      <div class="header-desc-box">
+        <div class="header-desc">
+          <p>තාක්ෂණයත් සමඟ වේගයෙන් ඉදිරියට යන මේ ලෝකයේ,<br>
+          සම්ප්‍රදායන් රැක ගැනීමට කරන ලද පුංචි ප්‍රයත්නයක් ලෙසින් මේ නිර්මාණ ඔබ වෙත ඉදිරිපත් කරමි.</p>
+          <p>අඩුපාඩු ඇත්නම් කරුණාකර සමාවෙන්න 🙏</p>
+          <p>මෙම නිර්මාණ ගැන ඔබට හිතෙන දෙය, යෝජනා, අදහස්<br>
+          <strong>WhatsApp</strong> හෝ <strong>Facebook</strong> මගින් මා හට එවන්න.<br>
+          ඔබේ අදහස මේ නිර්මාණ තවදුරටත් දියුණු කරගැනීමට මට ලොකු රුකුලක් වේවි.</p>
+          <p>ස්තූතියි! 🙏</p>
+        </div>
+        <p class="header-desc-en">
+          In this fast-moving digital world, these lantern creations are a humble effort to preserve our traditions. Your thoughts and suggestions via WhatsApp or Facebook are truly welcome. Thank you!
+        </p>
+      </div>
     </header>
 
     <a href="index.html" class="back-btn">← ප්‍රධාන පිටුවට</a>
@@ -622,7 +665,7 @@
 
     // ── Like System — 1 Like per Device, FB/TikTok Style ──
     const API      = 'https://api.counterapi.dev/v1/thilina-vesak-2026';
-    const likeKeys = { like1:'like-card1', like2:'like-card2', like3:'like-card3' };
+    const likeKeys = { like1:'pahan-like-v1-c1', like2:'pahan-like-v1-c2', like3:'pahan-like-v1-c3' };
 
     // Format: 1200 → 1.2K, 1000000 → 1M
     function fmtCount(n) {
