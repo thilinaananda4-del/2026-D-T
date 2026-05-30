@@ -71,13 +71,39 @@
       letter-spacing: 1px;
     }
 
-    .header-desc {
-      font-size: 0.95rem;
-      color: #e0e0e0;
-      max-width: 520px;
+    .header-desc-box {
+      max-width: 580px;
       margin: 0 auto;
-      line-height: 1.5;
-      text-shadow: 0 2px 5px rgba(0,0,0,0.9);
+      background: rgba(255, 215, 0, 0.04);
+      border: 1px solid rgba(255, 215, 0, 0.2);
+      border-radius: 16px;
+      padding: 18px 24px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.4), inset 0 0 30px rgba(255,215,0,0.03);
+    }
+
+    .header-desc {
+      font-family: 'Noto Sans Sinhala', 'Iskoola Pota', Arial, sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #f0d080;
+      line-height: 1.8;
+      text-shadow: 0 1px 6px rgba(0,0,0,0.9);
+      margin: 0;
+      letter-spacing: 0.2px;
+    }
+
+    .header-desc-en {
+      font-family: 'Georgia', 'Times New Roman', serif;
+      font-size: 0.82rem;
+      font-weight: 400;
+      font-style: italic;
+      color: #aaa;
+      line-height: 1.6;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255,215,0,0.15);
+      letter-spacing: 0.3px;
     }
 
     .buddha-image-container {
@@ -413,6 +439,8 @@
       .preview-box { height: 320px; }
       header h1 { font-size: 1.8rem; }
       .header-desc { font-size: 0.9rem; }
+      .header-desc-en { font-size: 0.76rem; }
+      .header-desc-box { padding: 14px 18px; }
       .buddha-main-img { width: 80px; }
     }
 
@@ -421,7 +449,9 @@
       .container { padding: 15px 14px 20px; }
       header { margin-bottom: 18px; }
       header h1 { font-size: 1.55rem; margin-bottom: 6px; }
-      .header-desc { font-size: 0.84rem; padding: 0 6px; line-height: 1.45; }
+      .header-desc { font-size: 0.84rem; line-height: 1.7; }
+      .header-desc-en { font-size: 0.72rem; margin-top: 8px; padding-top: 8px; }
+      .header-desc-box { padding: 13px 16px; border-radius: 12px; }
       .thorana-grid { gap: 16px; margin-bottom: 20px; }
       .thorana-card { width: calc(100% - 10px); max-width: 360px; }
       .preview-box { height: 260px; }
@@ -443,6 +473,8 @@
       header { margin-bottom: 14px; }
       header h1 { font-size: 1.35rem; letter-spacing: 0; }
       .header-desc { font-size: 0.78rem; }
+      .header-desc-en { font-size: 0.68rem; }
+      .header-desc-box { padding: 11px 13px; border-radius: 10px; }
       .thorana-card { width: 100%; max-width: 100%; border-radius: 14px; }
       .preview-box { height: 220px; }
       .thorana-details h2 { font-size: 1rem; }
@@ -459,6 +491,7 @@
     @media (max-width: 360px) {
       header h1 { font-size: 1.2rem; }
       .header-desc { font-size: 0.74rem; }
+      .header-desc-en { font-size: 0.64rem; }
       .preview-box { height: 190px; }
       .contact-btn { padding: 7px 11px; font-size: 11px; }
       .visitor-count-num { font-size: 0.95rem; }
@@ -484,10 +517,15 @@
       </div>
       
       <h1>ඩිජිටල් වෙසක් කලාපය</h1>
-      
-      <p class="header-desc">
-        පින්බර වෙසක් මංගල්‍යයක් වේවා! උතුම් බුදු ගුණ මහිමයෙන් ලොවම ඒකාලෝක කරන මේ පුණ්‍ය මහෝත්සවයේදී, ඩිජිටල් තාක්ෂණයෙන් හැඩවුණු අලංකාර තොරණ් සහ පහන් කූඩු නිර්මාණයන් නරඹා සිත් සතන් පහදවා ගන්න.
-      </p>
+
+      <div class="header-desc-box">
+        <p class="header-desc">
+          පින්බර වෙසක් මංගල්‍යයක් වේවා! උතුම් බුදු ගුණ මහිමයෙන් ලොවම ඒකාලෝක කරන මේ පුණ්‍ය මහෝත්සවයේදී, ඩිජිටල් තාක්ෂණයෙන් හැඩවුණු අලංකාර තොරණ් සහ පහන් කූඩු නිර්මාණයන් නරඹා සිත් සතන් පහදවා ගන්න.
+        </p>
+        <p class="header-desc-en">
+          Wishing you a blessed Vesak! Illuminate your heart with the virtues of the Buddha — explore our digitally crafted lanterns and thoranas created with love and devotion.
+        </p>
+      </div>
     </header>
 
     <div class="thorana-grid">
@@ -637,7 +675,7 @@
       const el = document.getElementById('visitorCount');
 
       // counterapi.dev: free, no setup, atomic increment
-      fetch('https://api.counterapi.dev/v1/thilina-vesak-2026/visits/up')
+      fetch('https://api.counterapi.dev/v1/thilina-vesak-2026/visits-v2/up')
         .then(res => {
           if (!res.ok) throw new Error('API Error: ' + res.status);
           return res.json();
