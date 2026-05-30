@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="si">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1, user-scalable=no" />
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#000000">
+
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='30' fill='%23c8820a'/%3E%3Ccircle cx='32' cy='32' r='8' fill='%23ffd700' stroke='%23fff' stroke-width='1.5'/%3E%3Ccircle cx='32' cy='32' r='26' fill='none' stroke='%23ffd700' stroke-width='2'/%3E%3Cg stroke='%23ffd700' stroke-width='2'%3E%3Cline x1='32' y1='6' x2='32' y2='24'/%3E%3Cline x1='32' y1='40' x2='32' y2='58'/%3E%3Cline x1='6' y1='32' x2='24' y2='32'/%3E%3Cline x1='40' y1='32' x2='58' y2='32'/%3E%3Cline x1='13' y1='13' x2='25' y2='25'/%3E%3Cline x1='39' y1='39' x2='51' y2='51'/%3E%3Cline x1='25' y1='39' x2='13' y2='51'/%3E%3C/g%3E%3C/svg%3E">
+
+  <title>Digital පහන්  කූඩු</title>
+
+  <style>
+    * { margin:0; padding:0; box-sizing:border-box; }
+    :root { --vh:1vh; }
+
+    html,body {
+      min-height:100vh;
+      min-height:calc(var(--vh,1vh)*100);
+      overflow-x:hidden;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      color:#fff;
+      background:
+        linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)),
+        url('bg.jpg') center center/cover no-repeat,
+        #000;
+      display:flex;
+      flex-direction:column;
+      align-items:center;
+      -webkit-user-select:none;
+      user-select:none;
+      overscroll-behavior:none;
+      padding-bottom:70px;
+    }
+    @media(min-width:1025px){ body{ background-attachment:fixed; } }
+
+    .bg-overlay {
+      position:fixed; inset:0;
+      background:radial-gradient(ellipse at center,rgba(0,0,0,0.2) 0%,rgba(0,0,0,0.72) 100%);
+      z-index:0; pointer-events:none;
+    }
+
+    /* Snow */
+    #snow { pointer-events:none; position:fixed; inset:0; z-index:5; }
+    .snowflake {
+      position:absolute; top:-10px; border-radius:50%;
+      animation:fall ease-in-out infinite; will-change:transform;
+    }
+    .snow-white  { background:radial-gradient(circle,#fff,#f0f8ff); opacity:.7; filter:drop-shadow(0 0 4px rgba(255,255,255,.9)); }
+    .snow-yellow { background:radial-gradient(circle,#ffd700,#ffaa00); opacity:.8; filter:drop-shadow(0 0 6px rgba(255,215,0,.9)); }
+    @keyframes fall {
+      0%   { transform:translateY(-20px) translateX(0) rotate(0deg); opacity:.8; }
+      50%  { opacity:.5; }
+      100% { transform:translateY(calc(100vh + 20px)) translateX(30px) rotate(360deg); opacity:.1; }
+    }
+
+    /* Container */
+    .container {
+      position:relative; z-index:20;
+      width:100%; max-width:1100px;
+      padding:36px 20px 20px;
+      text-align:center;
+    }
+
+    /* Header */
+    header { margin-bottom:32px; animation:fadeInDown 1s ease; }
+    .buddha-img {
+      width:88px; height:auto;
+      filter:drop-shadow(0 0 22px rgba(255,215,0,.85));
+      pointer-events:none; margin-bottom:14px; display:block; margin-inline:auto;
+    }
+    header h1 {
+      font-size:2rem; font-weight:700; color:#ffd700;
+      text-shadow:0 0 20px rgba(255,215,0,.7),0 2px 4px rgba(0,0,0,.8);
+      margin-bottom:8px;
+    }
+    .header-desc {
+      font-size:0.92rem; color:#ddd;
+      max-width:540px; margin:0 auto; line-height:1.6;
+      text-shadow:0 2px 5px rgba(0,0,0,.9);
+    }
+
+    /* Back btn */
+    .back-btn {
+      display:inline-flex; align-items:center; gap:7px;
+      padding:10px 22px; border-radius:50px;
+      background:rgba(10,7,2,.8); border:1px solid rgba(255,215,0,.3);
+      color:#ffd700; font-size:13px; font-weight:600;
+      text-decoration:none; transition:all .3s; margin-bottom:28px;
+    }
+    .back-btn:hover { border-color:#ffd700; box-shadow:0 0 14px rgba(255,215,0,.3); transform:translateY(-2px); }
+
+    /* Video Grid */
+    .video-grid {
+      display:flex; justify-content:center;
+      gap:28px; flex-wrap:wrap; width:100%; margin-bottom:36px;
+    }
+
+    /* Video Card */
+    .video-card {
+      background:rgba(8,5,0,0.85);
+      border:1px solid rgba(255,215,0,0.22);
+      border-radius:20px; width:320px;
+      overflow:hidden; backdrop-filter:blur(14px);
+      box-shadow:0 10px 32px rgba(0,0,0,.6);
+      transition:all .4s cubic-bezier(.165,.84,.44,1);
+      display:flex; flex-direction:column;
+      position:relative; animation:fadeInUp 1s ease;
+    }
+    .video-card::before {
+      content:''; position:absolute; inset:0; border-radius:20px; padding:2px;
+      background:linear-gradient(135deg,#ffd700,transparent,#c8820a);
+      -webkit-mask:linear-gradient(#fff 0 0) content-box,linear-gradient(#fff 0 0);
+      -webkit-mask-composite:xor; mask-composite:exclude;
+      opacity:.35; transition:opacity .3s; pointer-events:none;
+    }
+    .video-card:hover { transform:translateY(-8px); border-color:rgba(255,215,0,.55); box-shadow:0 18px 45px rgba(255,215,0,.18); }
+    .video-card:hover::before { opacity:1; }
+
+    /* Video wrapper — auto height, no crop */
+    .video-wrap {
+      width:100%;
+      background:#050505; position:relative; overflow:hidden;
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+    .video-wrap video {
+      width:100%; height:auto; display:block; border:none;
+    }
+
+    /* Sound toggle button */
+    .sound-btn { display:none !important; }
+
+    /* Card details */
+    .card-details {
+      padding:18px 18px; display:flex; flex-direction:column; gap:11px;
+    }
+    .card-num { font-size:0.73rem; color:#c8820a; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; }
+    .card-title { font-size:1.08rem; color:#fff; font-weight:700; line-height:1.4; }
+    .card-desc { font-size:0.8rem; color:#bbb; line-height:1.5; }
+
+    .badges { display:flex; gap:6px; flex-wrap:wrap; }
+    .badge {
+      font-size:0.7rem; padding:3px 10px; border-radius:20px;
+      background:rgba(255,215,0,0.08); border:1px solid rgba(255,215,0,0.25);
+      color:#ffd700; font-weight:600;
+    }
+
+    /* Card bottom row */
+    .card-bottom {
+      display:flex; flex-direction:column;
+      align-items:center; gap:8px;
+    }
+
+    /* Big like count display above button */
+    .like-count-display {
+      display:flex; align-items:center; gap:8px;
+    }
+    .like-big-num {
+      font-size:1.7rem; font-weight:800;
+      color:#fff;
+      text-shadow:0 0 12px rgba(255,71,87,0.5);
+      line-height:1;
+      transition:all .3s;
+      min-width:2ch;
+    }
+    .like-big-num.bump {
+      animation:numBump .4s ease;
+    }
+    .like-big-num.loading {
+      color:transparent;
+      position:relative;
+    }
+    .like-big-num.loading::after {
+      content:'';
+      position:absolute;
+      left:50%; top:50%;
+      transform:translate(-50%,-50%);
+      width:22px; height:22px;
+      border:3px solid rgba(255,255,255,0.15);
+      border-top-color:#ffd700;
+      border-radius:50%;
+      animation:spin .7s linear infinite;
+    }
+    @keyframes spin { to { transform:translate(-50%,-50%) rotate(360deg); } }
+    .like-big-label {
+      font-size:0.75rem; color:#999;
+      font-weight:600; letter-spacing:0.5px;
+      text-transform:uppercase;
+      align-self:flex-end; padding-bottom:4px;
+    }
+    @keyframes numBump {
+      0%   { transform:scale(1); }
+      40%  { transform:scale(1.4); color:#ff4757; }
+      70%  { transform:scale(0.95); }
+      100% { transform:scale(1); }
+    }
+
+    /* Like button */
+    .like-btn {
+      display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      padding:11px 34px; border-radius:50px;
+      background:rgba(255,50,80,0.06);
+      border:1px solid rgba(255,80,100,0.3);
+      color:#aaa; font-size:14px; font-weight:700;
+      cursor:pointer; transition:all .35s;
+      box-shadow:0 4px 14px rgba(0,0,0,.4);
+      -webkit-user-select:none; user-select:none;
+      position:relative; z-index:30; overflow:hidden;
+      width:100%;
+    }
+    .like-btn:hover:not(.liked) {
+      background:rgba(255,50,80,0.14);
+      border-color:#ff4757; color:#ff6b81;
+      box-shadow:0 0 18px rgba(255,71,87,0.4);
+      transform:scale(1.04);
+    }
+    .like-btn.liked {
+      background:linear-gradient(135deg,rgba(255,50,80,0.25),rgba(255,100,50,0.18));
+      border-color:#ff4757; color:#ff4757;
+      box-shadow:0 0 22px rgba(255,71,87,0.55);
+    }
+    .like-btn.already-liked {
+      opacity:0.72; cursor:not-allowed;
+    }
+    .like-btn.already-liked:hover {
+      transform:none !important; box-shadow:none !important;
+    }
+
+    /* Already liked toast */
+    .like-toast {
+      position:fixed;
+      bottom: 80px;
+      left:50%; transform:translateX(-50%) translateY(20px);
+      background:rgba(255,71,87,0.92);
+      color:#fff;
+      padding:10px 22px;
+      border-radius:50px;
+      font-size:13.5px;
+      font-weight:600;
+      white-space:nowrap;
+      box-shadow:0 6px 20px rgba(255,71,87,0.5);
+      z-index:9999;
+      opacity:0;
+      pointer-events:none;
+      transition:opacity .3s ease, transform .3s ease;
+    }
+    .like-toast.show {
+      opacity:1;
+      transform:translateX(-50%) translateY(0);
+    }
+
+    /* Heart icon */
+    .heart-ico {
+      font-size:20px; line-height:1;
+      display:inline-block;
+      transition:transform .2s;
+    }
+    .like-btn.liked .heart-ico {
+      animation:heartBeat .5s ease;
+    }
+
+    /* Count display */
+    .like-count {
+      font-size:14px; font-weight:800;
+      min-width:22px; letter-spacing:0.3px;
+      transition:all .3s;
+    }
+
+    /* Like label */
+    .like-label {
+      font-size:12px; font-weight:600;
+      opacity:0.8; letter-spacing:0.5px;
+    }
+
+    /* Floating hearts animation */
+    .float-heart {
+      position:absolute;
+      font-size:20px;
+      pointer-events:none;
+      animation:floatUp 1s ease forwards;
+      z-index:50;
+    }
+    @keyframes floatUp {
+      0%   { transform:translateY(0) scale(1); opacity:1; }
+      100% { transform:translateY(-70px) scale(1.4); opacity:0; }
+    }
+
+    @keyframes heartBeat {
+      0%   { transform:scale(1); }
+      25%  { transform:scale(1.5); }
+      50%  { transform:scale(0.9); }
+      75%  { transform:scale(1.25); }
+      100% { transform:scale(1); }
+    }
+
+    /* Music btn */
+    .music-control {
+      position:fixed; bottom:20px; right:20px; z-index:100;
+      background:rgba(200,130,10,.3); border:1px solid rgba(255,215,0,.4);
+      backdrop-filter:blur(10px); width:44px; height:44px; border-radius:50%;
+      display:flex; align-items:center; justify-content:center; cursor:pointer;
+      box-shadow:0 4px 15px rgba(0,0,0,.5); transition:all .3s;
+    }
+    .music-control:hover { background:rgba(255,215,0,.5); transform:scale(1.1); }
+    .music-icon { fill:#ffd700; width:20px; height:20px; }
+
+    /* Contact buttons */
+    .contact-section {
+      display:flex; justify-content:center;
+      gap:12px; flex-wrap:wrap;
+      margin: 10px 0 18px;
+    }
+    .contact-btn {
+      display:inline-flex; align-items:center; gap:8px;
+      padding:11px 22px; border-radius:50px;
+      background:rgba(20,15,5,0.85);
+      border:1px solid rgba(255,215,0,0.35);
+      color:#ffd700; font-size:14px; font-weight:600;
+      text-decoration:none; transition:all .3s;
+      box-shadow:0 4px 12px rgba(0,0,0,.5);
+      pointer-events:auto;
+    }
+    .contact-btn i { font-size:18px; }
+    .contact-btn:hover { transform:translateY(-3px); }
+    .contact-btn.facebook:hover {
+      background:rgba(24,119,242,0.2); border-color:#1877f2; color:#6aadff;
+      box-shadow:0 0 18px rgba(24,119,242,0.6);
+    }
+    .contact-btn.tiktok:hover {
+      background:rgba(255,255,255,0.08); border-color:#fff; color:#fff;
+      box-shadow:0 0 18px rgba(255,255,255,0.3);
+    }
+    .contact-btn.whatsapp:hover {
+      background:rgba(37,211,102,0.2); border-color:#25D366; color:#25D366;
+      box-shadow:0 0 18px rgba(37,211,102,0.6);
+    }
+
+    footer {
+      width:100%; text-align:center; color:#777; font-size:0.78rem;
+      padding:18px 0; z-index:20; position:relative;
+      text-shadow:0 1px 3px rgba(0,0,0,.8);
+    }
+
+    @keyframes fadeInDown { from{opacity:0;transform:translateY(-20px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes fadeInUp   { from{opacity:0;transform:translateY(20px)}  to{opacity:1;transform:translateY(0)} }
+
+    /* Tablet */
+    /* ── Tablet landscape (769–1024px) ── */
+    @media(max-width:1024px) and (min-width:769px){
+      .container { padding:26px 20px 20px; }
+      header h1 { font-size:1.7rem; }
+      .header-desc { font-size:0.88rem; }
+      .buddha-img { width:76px; }
+      .video-grid { gap:22px; }
+      .video-card { width:290px; }
+    }
+
+    /* ── Tablet portrait / large phone (481–768px) ── */
+    @media(max-width:768px){
+      body { padding-bottom:60px; }
+      .container { padding:18px 14px 14px; }
+      header { margin-bottom:20px; }
+      header h1 { font-size:1.55rem; }
+      .header-desc { font-size:0.84rem; padding:0 6px; }
+      .buddha-img { width:68px; margin-bottom:10px; }
+      .video-grid { gap:18px; margin-bottom:28px; }
+      .video-card { width:100%; max-width:400px; border-radius:16px; }
+      .card-details { padding:16px 14px; gap:10px; }
+      .card-title { font-size:1rem; }
+      .card-desc { font-size:0.78rem; }
+      .like-btn { padding:10px 24px; font-size:13px; }
+      .heart-ico { font-size:18px; }
+      .like-count { font-size:13px; }
+      .contact-btn { padding:9px 16px; font-size:13px; }
+      .contact-btn i { font-size:16px; }
+      .back-btn { font-size:12px; padding:9px 18px; margin-bottom:22px; }
+      .music-control { width:40px; height:40px; bottom:15px; right:15px; }
+      footer { font-size:0.75rem; }
+    }
+
+    /* ── Small phones (≤480px) ── */
+    @media(max-width:480px){
+      body { padding-bottom:55px; }
+      .container { padding:13px 10px 12px; }
+      header { margin-bottom:14px; }
+      header h1 { font-size:1.3rem; letter-spacing:0; }
+      .header-desc { font-size:0.78rem; }
+      .buddha-img { width:56px; margin-bottom:8px; }
+      .video-grid { gap:14px; margin-bottom:22px; }
+      .video-card { width:100%; max-width:100%; border-radius:14px; }
+      .card-details { padding:13px 12px; gap:9px; }
+      .card-num { font-size:0.68rem; }
+      .card-title { font-size:0.95rem; }
+      .card-desc { font-size:0.75rem; }
+      .like-btn { padding:10px 20px; font-size:12.5px; width:100%; }
+      .heart-ico { font-size:17px; }
+      .like-count,.like-label { font-size:12.5px; }
+      .contact-section { gap:8px; }
+      .contact-btn { padding:8px 13px; font-size:12px; }
+      .contact-btn i { font-size:15px; }
+      .back-btn { font-size:12px; padding:8px 16px; }
+      .music-control { width:38px; height:38px; bottom:12px; right:12px; }
+      footer { font-size:0.7rem; padding:14px 0; }
+    }
+
+    /* ── Very small (≤360px) ── */
+    @media(max-width:360px){
+      header h1 { font-size:1.15rem; }
+      .header-desc { font-size:0.72rem; }
+      .contact-btn span { display:none; }
+      .contact-btn { padding:9px 13px; }
+      .like-btn { padding:9px 16px; }
+    }
+  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" crossorigin="anonymous" />
+</head>
+<body>
+
+  <div class="bg-overlay"></div>
+  <audio id="bgMusic" src="myc.mp3" loop></audio>
+  <div id="snow" aria-hidden="true"></div>
+  <div id="likeToast" class="like-toast">❤️ ඔබ දැනටමත් Like කර ඇත!</div>
+
+
+  <!-- Music Button -->
+  <div class="music-control" id="musicBtn">
+    <svg class="music-icon" id="musicIcon" viewBox="0 0 24 24">
+      <path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77zM4.19 4.47L3.13 5.53 7.6 10H4v4h3l5 5v-6.93l4.56 4.56c-.44.34-.92.63-1.44.83v2.06c1.07-.24 2.06-.74 2.91-1.44l2.44 2.44 1.06-1.06L4.19 4.47zM12 4L9.91 6.09 12 8.18V4z"/>
+    </svg>
+  </div>
+
+  <div class="container">
+    <header>
+      <img src="buddha.png" alt="Budhu Ruwa" class="buddha-img" />
+      <h1>Digital පහන් කූඩු</h1>
+      <p class="header-desc"><p>තාක්ෂණයත් සමඟ වේගයෙන් ඉදිරියට යන මේ ලෝකයේ,<br>
+සම්ප්‍රදායන් රැක ගැනීමට කරන ලද පුංචි ප්‍රයත්නයක් ලෙසින් මේ නිර්මාණ ඔබ වෙත ඉදිරිපත් කරමි.</p>
+
+<p>අඩුපාඩු ඇත්නම් කරුණාකර සමාවෙන්න 🙏</p>
+
+<p>මෙම නිර්මාණ ගැන ඔබට හිතෙන දෙය, යෝජනා, අදහස්<br>
+<strong>WhatsApp</strong> හෝ <strong>Facebook</strong> මගින් මා හට එවන්න.<br>
+ඔබේ අදහස මේ නිර්මාණ තවදුරටත් දියුණු කරගැනීමට මට ලොකු රුකුලක් වේවි.</p>
+
+<p>ස්තූතියි!<br></p>
+    </header>
+
+    <a href="index.html" class="back-btn">← ප්‍රධාන පිටුවට</a>
+
+    <div class="video-grid">
+
+      <!-- ══ CARD 01 ══ -->
+      <div class="video-card">
+        <div class="video-wrap">
+          <video id="vid1" autoplay muted loop playsinline preload="auto" disablepictureinpicture controlslist="nodownload nofullscreen noremoteplayback">
+            <source src="1.mp4" type="video/mp4">
+          </video>
+          <div class="sound-btn" id="sb1" onclick="toggleSound('vid1','sb1')" title="Sound">
+            <svg id="sico1" viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77zM4.19 4.47L3.13 5.53 7.6 10H4v4h3l5 5v-6.93l4.56 4.56c-.44.34-.92.63-1.44.83v2.06c1.07-.24 2.06-.74 2.91-1.44l2.44 2.44 1.06-1.06L4.19 4.47zM12 4L9.91 6.09 12 8.18V4z"/></svg>
+          </div>
+        </div>
+        <div class="card-details">
+          <div class="card-num">පහන් කූඩු 01</div>
+          <div class="card-title"></div>
+          <div class="card-desc"></div>
+          <div class="card-bottom">
+            <div class="like-count-display">
+              <span class="like-big-num" id="lc1">0</span>
+              <span class="like-big-label">Likes</span>
+            </div>
+            <button class="like-btn" id="like1" onclick="toggleLike('like1','lc1')">
+              <span class="heart-ico">🤍</span>
+              <span class="like-label">Like</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ CARD 02 ══ -->
+      <div class="video-card">
+        <div class="video-wrap">
+          <video id="vid2" autoplay muted loop playsinline preload="auto" disablepictureinpicture controlslist="nodownload nofullscreen noremoteplayback">
+            <source src="2.mp4" type="video/mp4">
+          </video>
+          <div class="sound-btn" id="sb2" onclick="toggleSound('vid2','sb2')" title="Sound">
+            <svg id="sico2" viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77zM4.19 4.47L3.13 5.53 7.6 10H4v4h3l5 5v-6.93l4.56 4.56c-.44.34-.92.63-1.44.83v2.06c1.07-.24 2.06-.74 2.91-1.44l2.44 2.44 1.06-1.06L4.19 4.47zM12 4L9.91 6.09 12 8.18V4z"/></svg>
+          </div>
+        </div>
+        <div class="card-details">
+          <div class="card-num">පහන් කූඩු 02</div>
+          <div class="card-title"></div>
+          <div class="card-desc"></div>
+          <div class="card-bottom">
+            <div class="like-count-display">
+              <span class="like-big-num" id="lc2">0</span>
+              <span class="like-big-label">Likes</span>
+            </div>
+            <button class="like-btn" id="like2" onclick="toggleLike('like2','lc2')">
+              <span class="heart-ico">🤍</span>
+              <span class="like-label">Like</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ CARD 03 ══ -->
+      <div class="video-card">
+        <div class="video-wrap">
+          <video id="vid3" autoplay muted loop playsinline preload="auto" disablepictureinpicture controlslist="nodownload nofullscreen noremoteplayback">
+            <source src="3.mp4" type="video/mp4">
+          </video>
+          <div class="sound-btn" id="sb3" onclick="toggleSound('vid3','sb3')" title="Sound">
+            <svg id="sico3" viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77zM4.19 4.47L3.13 5.53 7.6 10H4v4h3l5 5v-6.93l4.56 4.56c-.44.34-.92.63-1.44.83v2.06c1.07-.24 2.06-.74 2.91-1.44l2.44 2.44 1.06-1.06L4.19 4.47zM12 4L9.91 6.09 12 8.18V4z"/></svg>
+          </div>
+        </div>
+        <div class="card-details">
+          <div class="card-num">පහන් කූඩු 03</div>
+          <div class="card-title"></div>
+          <div class="card-desc"></div>
+          <div class="card-bottom">
+            <div class="like-count-display">
+              <span class="like-big-num" id="lc3">0</span>
+              <span class="like-big-label">Likes</span>
+            </div>
+            <button class="like-btn" id="like3" onclick="toggleLike('like3','lc3')">
+              <span class="heart-ico">🤍</span>
+              <span class="like-label">Like</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Contact Buttons -->
+    <div class="contact-section">
+      <a href="https://www.facebook.com/profile.php?id=61552332803796" target="_blank" class="contact-btn facebook">
+        <i class="fa-brands fa-facebook-f"></i><span>Facebook</span>
+      </a>
+      <a href="https://vm.tiktok.com/ZSSVar6r3/" target="_blank" class="contact-btn tiktok">
+        <i class="fa-brands fa-tiktok"></i><span>TikTok</span>
+      </a>
+      <a href="https://wa.me/94717472209" target="_blank" class="contact-btn whatsapp">
+        <i class="fa-brands fa-whatsapp"></i><span>WhatsApp</span>
+      </a>
+    </div>
+
+    <footer>&copy; 2026 Thilina Ananda. All rights reserved.</footer>
+  </div>
+
+  <script>
+    // VH fix
+    function setVH(){ document.documentElement.style.setProperty('--vh', window.innerHeight*.01+'px'); }
+    window.addEventListener('resize', setVH); setVH();
+
+    // ── Like Reset via URL: nirmaana.html?reset=likes ──
+    if (new URLSearchParams(location.search).get('reset') === 'likes') {
+      const devId = localStorage.getItem('_dvid');
+      ['like-card1','like-card2','like-card3'].forEach(k => {
+        localStorage.removeItem(k + '_liked_' + devId);
+      });
+      // Redirect clean URL
+      history.replaceState({}, '', location.pathname);
+      location.reload();
+    }
+
+    document.addEventListener('contextmenu', e => e.preventDefault());
+    document.addEventListener('dragstart', e => e.preventDefault());
+    document.addEventListener('selectstart', e => {
+      if (!e.target.closest('.view-btn') && !e.target.closest('.back-btn') && !e.target.closest('.music-control')) e.preventDefault();
+    });
+
+    // Sound toggle
+    const muteIcon   = `<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77zM4.19 4.47L3.13 5.53 7.6 10H4v4h3l5 5v-6.93l4.56 4.56c-.44.34-.92.63-1.44.83v2.06c1.07-.24 2.06-.74 2.91-1.44l2.44 2.44 1.06-1.06L4.19 4.47zM12 4L9.91 6.09 12 8.18V4z"/>`;
+    const unmuteIcon = `<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>`;
+
+    function toggleSound(vidId, btnId) {
+      const vid = document.getElementById(vidId);
+      const ico = document.getElementById('sico' + btnId.replace('sb',''));
+      ['vid1','vid2','vid3'].forEach(id => {
+        if(id !== vidId) {
+          document.getElementById(id).muted = true;
+          document.getElementById('sico'+id.replace('vid','')).innerHTML = muteIcon;
+        }
+      });
+      vid.muted = !vid.muted;
+      ico.innerHTML = vid.muted ? muteIcon : unmuteIcon;
+    }
+
+    // Force autoplay
+    window.addEventListener('load', () => {
+      ['vid1','vid2','vid3'].forEach(id => {
+        const v = document.getElementById(id);
+        v.muted = true;
+        v.play().catch(()=>{});
+        // Disable Picture-in-Picture
+        v.addEventListener('enterpictureinpicture', () => {
+          document.exitPictureInPicture().catch(()=>{});
+        });
+      });
+    });
+
+    // Music
+    const audio     = document.getElementById('bgMusic');
+    const musicBtn  = document.getElementById('musicBtn');
+    const musicIcon = document.getElementById('musicIcon');
+    const iconPlay  = `<path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>`;
+    const iconMute2 = `<path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77zM4.19 4.47L3.13 5.53 7.6 10H4v4h3l5 5v-6.93l4.56 4.56c-.44.34-.92.63-1.44.83v2.06c1.07-.24 2.06-.74 2.91-1.44l2.44 2.44 1.06-1.06L4.19 4.47zM12 4L9.91 6.09 12 8.18V4z"/>`;
+    musicBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      if(audio.paused){ audio.play().then(()=>musicIcon.innerHTML=iconPlay).catch(()=>{}); }
+      else { audio.pause(); musicIcon.innerHTML=iconMute2; }
+    });
+    document.body.addEventListener('click',()=>{
+      if(audio.paused) audio.play().then(()=>musicIcon.innerHTML=iconPlay).catch(()=>{});
+    },{once:true});
+
+    // ── Like System — 1 Like per Device, FB/TikTok Style ──
+    const API      = 'https://api.counterapi.dev/v1/thilina-vesak-2026';
+    const likeKeys = { like1:'like-card1', like2:'like-card2', like3:'like-card3' };
+
+    // Format: 1200 → 1.2K, 1000000 → 1M
+    function fmtCount(n) {
+      if (n >= 1000000) return (n/1000000).toFixed(1).replace('.0','') + 'M';
+      if (n >= 1000)    return (n/1000).toFixed(1).replace('.0','')    + 'K';
+      return n.toString();
+    }
+
+    // Generate a stable device fingerprint (stored in localStorage)
+    function getDeviceId() {
+      let id = localStorage.getItem('_dvid');
+      if (!id) {
+        id = Math.random().toString(36).slice(2) + Date.now().toString(36);
+        localStorage.setItem('_dvid', id);
+      }
+      return id;
+    }
+
+    // Floating hearts burst
+    function spawnHearts(btn) {
+      const hearts = ['❤️','🧡','💛','💜','💖'];
+      for (let i = 0; i < 6; i++) {
+        setTimeout(() => {
+          const h = document.createElement('span');
+          h.className = 'float-heart';
+          h.innerText = hearts[Math.floor(Math.random()*hearts.length)];
+          h.style.left = (30 + Math.random()*40) + '%';
+          h.style.bottom = '10px';
+          h.style.fontSize = (16 + Math.random()*10) + 'px';
+          btn.appendChild(h);
+          setTimeout(() => h.remove(), 1000);
+        }, i * 80);
+      }
+    }
+
+    // Load counts — show spinner, retry up to 3x on fail
+    function loadCount(key, cntId, attempt) {
+      const el = document.getElementById(cntId);
+      if (attempt === 1) el.classList.add('loading');
+
+      fetch(`${API}/${key}/get`, { cache: 'no-store' })
+        .then(r => { if (!r.ok) throw new Error('bad'); return r.json(); })
+        .then(d => {
+          const n = (d && typeof d.count === 'number') ? d.count : 0;
+          el.classList.remove('loading');
+          el.innerText = fmtCount(n);
+          localStorage.setItem(key+'_count', n);
+        })
+        .catch(() => {
+          if (attempt < 3) {
+            setTimeout(() => loadCount(key, cntId, attempt + 1), 1500);
+          } else {
+            el.classList.remove('loading');
+            const saved = parseInt(localStorage.getItem(key+'_count') || '0');
+            el.innerText = fmtCount(saved);
+          }
+        });
+    }
+
+    Object.keys(likeKeys).forEach(btnId => {
+      const key   = likeKeys[btnId];
+      const cntId = btnId.replace('like','lc');
+      const btn   = document.getElementById(btnId);
+
+      loadCount(key, cntId, 1);
+
+      // Restore liked state
+      const devId  = getDeviceId();
+      const liked  = localStorage.getItem(key+'_liked_'+devId) === '1';
+      if (liked) {
+        btn.classList.add('liked','already-liked');
+        btn.querySelector('.heart-ico').innerText = '❤️';
+        btn.querySelector('.like-label').innerText = 'Liked';
+      }
+    });
+
+    function toggleLike(btnId, countId) {
+      const key     = likeKeys[btnId];
+      const btn     = document.getElementById(btnId);
+      const countEl = document.getElementById(countId);
+      const devId   = getDeviceId();
+      const lsKey   = key + '_liked_' + devId;
+
+      // ── Already liked → show toast ──
+      if (localStorage.getItem(lsKey) === '1') {
+        const toast = document.getElementById('likeToast');
+        toast.classList.add('show');
+        clearTimeout(window._likeToastTimer);
+        window._likeToastTimer = setTimeout(() => toast.classList.remove('show'), 2500);
+        // small shake on button
+        btn.style.animation = 'shake .4s ease';
+        setTimeout(() => btn.style.animation = '', 500);
+        return;
+      }
+
+      // ── Like! ──
+      localStorage.setItem(lsKey, '1');
+      btn.classList.add('liked', 'already-liked');
+      btn.querySelector('.heart-ico').innerText = '❤️';
+      btn.querySelector('.like-label').innerText = 'Liked';
+
+      // Optimistic UI update
+      const cur = parseInt(localStorage.getItem(key+'_count') || '0');
+      const newVal = cur + 1;
+      const bigNum = document.getElementById(countId);
+      bigNum.innerText = fmtCount(newVal);
+      bigNum.classList.remove('bump');
+      void bigNum.offsetWidth; // reflow
+      bigNum.classList.add('bump');
+      setTimeout(() => bigNum.classList.remove('bump'), 400);
+      localStorage.setItem(key+'_count', newVal);
+
+      // Floating hearts
+      spawnHearts(btn);
+
+      // Sync to server
+      fetch(`${API}/${key}/up`)
+        .then(r => r.json())
+        .then(d => {
+          const n = (d && typeof d.count === 'number') ? d.count : newVal;
+          document.getElementById(countId).innerText = fmtCount(n);
+          localStorage.setItem(key+'_count', n);
+        }).catch(() => {});
+    }
+
+    // Shake animation
+    const shakeStyle = document.createElement('style');
+    shakeStyle.innerText = `@keyframes shake {
+      0%,100%{transform:translateX(0)} 20%{transform:translateX(-5px)}
+      40%{transform:translateX(5px)} 60%{transform:translateX(-4px)}
+      80%{transform:translateX(4px)}
+    }`;
+    document.head.appendChild(shakeStyle);
+
+    // Snow
+    const snowEl = document.getElementById('snow');
+    function createFlake(){
+      const f = document.createElement('div');
+      f.classList.add('snowflake', Math.random()>.5?'snow-white':'snow-yellow');
+      const mob = window.innerWidth<=768;
+      const size = Math.random()*3+(mob?2:4);
+      f.style.cssText=`width:${size}px;height:${size}px;left:${Math.random()*100}vw`;
+      const dur=Math.random()*8+7;
+      f.style.animationDuration=dur+'s';
+      f.style.animationDelay='-'+Math.random()*dur+'s';
+      snowEl.appendChild(f);
+      setTimeout(()=>f.remove(),dur*1000);
+    }
+    function snowLoop(){ createFlake(); setTimeout(snowLoop,window.innerWidth<=768?300:160); }
+    window.addEventListener('load',()=>setTimeout(snowLoop,400));
+  </script>
+
+</body>
+</html>
